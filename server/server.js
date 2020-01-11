@@ -1,7 +1,6 @@
 let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
-let cors = require("cors");
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -16,7 +15,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
 app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/api", nbaRoute);
