@@ -17,8 +17,8 @@ app.use((req, res, next) => {
 });
 
 app.use(cors());
-app.use(express.static(path.join(__dirname, "dist/nba-visualizer")));
-app.use("/", express.static(path.join(__dirname, "dist/nba-visualizer")));
+app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
+app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/api", nbaRoute);
 
 app.listen(process.env.PORT || 4201);
