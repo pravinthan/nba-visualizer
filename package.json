@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cd server && node server.js",
-    "build": "ng build && netlify-lambda build express"
+    "start": "cd server && netlify-lambda serve server",
+    "build": "ng build && netlify-lambda build server"
   },
   "private": true,
   "dependencies": {

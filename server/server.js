@@ -2,7 +2,7 @@ let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
 let cors = require("cors");
-const serverless = require('serverless-http');
+const serverless = require("serverless-http");
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/api", nbaRoute);
-app.use('/.netlify/functions/server', express.Router());  // path must route to lambda
+app.use("/.netlify/functions/api", nbaRoute);
 
 app.listen(4201);
 
@@ -37,5 +37,4 @@ app.use(function(err, req, res, next) {
   res.status(err.statusCode).send(err.message);
 });
 
-module.exports = app;
 module.exports.handler = serverless(app);
