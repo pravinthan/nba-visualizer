@@ -5,8 +5,7 @@
     "ng": "ng",
     "start": "node server/server.js",
     "build": "ng build",
-    "serve": "(cd server && npm start) & npm start",
-    "heroku-postbuild": "ng build --prod"
+    "postinstall": "ng build --output-path dist"
   },
   "private": true,
   "dependencies": {
