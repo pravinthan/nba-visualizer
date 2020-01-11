@@ -2,6 +2,7 @@ let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
 let cors = require("cors");
+const serverless = require('serverless-http');
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -34,3 +35,6 @@ app.use(function(err, req, res, next) {
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).send(err.message);
 });
+
+module.exports = app;
+module.exports.handler = serverless(app);
