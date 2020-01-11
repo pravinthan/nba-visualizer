@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "serve": "(cd server && npm start) & npm start"
+    "serve": "npm start"
   },
   "private": true,
   "dependencies": {
