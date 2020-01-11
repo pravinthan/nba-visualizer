@@ -10,4 +10,4 @@
 
 A web app dedicated to providing user-friendly NBA schedules, box scores, play-by-play data and more.
 
-Check out the <a href="https://nba.pravinthan.com/#/schedule" target="_blank">schedule</a> and you can click on the score to see preview and recap articles, full box score and play-by-play data.
+Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can click on the score to see preview and recap articles, full box score and play-by-play data.
