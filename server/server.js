@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, "dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "dist/nba-visualizer")));
 app.use("/api", nbaRoute);
 
-app.listen(4201, "https://blooming-shore-87721.herokuapp.com");
+app.listen(4201, "nba-visualizer-app.herokuapp.com");
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
