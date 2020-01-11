@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "node server/server.js",
-    "build": "ng build",
-    "postinstall": "ng build --output-path dist"
+    "start": "cd server && node server.js",
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
