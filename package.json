@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server/server.js",
     "build": "ng build",
     "serve": "(cd server && npm start) & npm start",
-    "heroku-postbuild": "ng build --prod",
-    "postinstall": "ng build --prod"
+    "heroku-postbuild": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -38,7 +37,12 @@
     "eslint-config-google": "^0.14.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
-    "typescript": "~3.5.3"
+    "typescript": "~3.5.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-fetch": "^3.0.4",
+    "express": "^4.17.1",
+    "nba.js": "^0.6.1"
   },
   "devDependencies": {}
 }
