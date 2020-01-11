@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/api", nbaRoute);
 
-app.listen(process.env.PORT || 4201);
+app.listen(4201);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
