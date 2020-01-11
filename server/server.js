@@ -2,7 +2,7 @@ let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
 let cors = require("cors");
-const nbaRoute = require("../routes/nba.route");
+const nbaRoute = require("./routes/nba.route");
 const app = express();
 
 // Allow any method from any host and log requests
