@@ -2,7 +2,6 @@ let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
 let cors = require("cors");
-let bodyParser = require("body-parser");
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -14,30 +13,15 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-
-  if ("OPTIONS" === req.method) {
-    res.sendStatus(200);
-  } else {
-    console.log(`${req.ip} ${req.method} ${req.url}`);
-    next();
-  }
+  next();
 });
 
-// Handle POST requests that come in formatted as JSON
-app.use(bodyParser.json());
-app.use(
-  bodyParser.urlencoded({
-    extended: false
-  })
-);
 app.use(cors());
 app.use(express.static(path.join(__dirname, "dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "dist/nba-visualizer")));
 app.use("/api", nbaRoute);
 
-app.listen(4201, "localhost", () => {
-  console.log("server listening");
-});
+app.listen(4201, "https://blooming-shore-87721.herokuapp.com");
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {

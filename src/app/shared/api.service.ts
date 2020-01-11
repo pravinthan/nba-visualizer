@@ -13,8 +13,7 @@ import { BoxScore } from "./box-score.model";
   providedIn: "root"
 })
 export class ApiService {
-  endpoint = "http://localhost:4201/api";
-  // endpoint = 'api';
+  endpoint = "https://blooming-shore-87721.herokuapp.com:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}
