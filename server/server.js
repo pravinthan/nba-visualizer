@@ -2,7 +2,6 @@ let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
 let cors = require("cors");
-const serverless = require("serverless-http");
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -20,10 +19,9 @@ app.use((req, res, next) => {
 app.use(cors());
 app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
-// app.use("/api", nbaRoute);
-app.use("/.netlify/functions/api", nbaRoute);
+app.use("/api", nbaRoute);
 
-app.listen(4201);
+app.listen(process.env.PORT || 4201);
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -36,5 +34,3 @@ app.use(function(err, req, res, next) {
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).send(err.message);
 });
-
-module.exports.handler = serverless(app);

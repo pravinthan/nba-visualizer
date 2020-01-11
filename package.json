@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "netlify-lambda serve server",
-    "build": "ng build && netlify-lambda build server"
+    "start": "cd server && node server.js",
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
@@ -34,10 +34,8 @@
     "express": "^4.17.1",
     "hammerjs": "^2.0.8",
     "nba.js": "^0.6.1",
-    "netlify-lambda": "^1.6.3",
     "protractor": "~5.4.0",
     "rxjs": "~6.4.0",
-    "serverless-http": "^2.3.0",
     "ts-node": "~7.0.0",
     "tslib": "^1.10.0",
     "typescript": "~3.5.3",
