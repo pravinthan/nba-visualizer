@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "cd server && netlify-lambda serve server",
+    "start": "netlify-lambda serve server",
     "build": "ng build && netlify-lambda build server"
   },
   "private": true,
