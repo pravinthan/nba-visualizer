@@ -1,0 +1,55 @@
+/* mat-form-field,
+textarea {
+  width: 100%;
+  margin: 1rem;
+} */
+
+.home-text {
+  color: white;
+  background-color: rgba(0, 0, 0, 0.6);
+  border: 2px solid #f1f1f1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  width: 60%;
+  min-width: 220px;
+  max-width: 1175px;
+  padding: 20px;
+  text-align: center;
+}
+
+.home-image {
+  height: 100%;
+  background-image: url("../../../../assets/statistics.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.links {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.links a {
+  margin: 0 0.5rem 0 0.5rem;
+}
+
+@media only screen and (max-width: 770px) {
+  .links {
+    flex-direction: column;
+  }
+
+  .links a {
+    margin: 1rem 0 0 0;
+  }
+}
+
+.mat-list-icon {
+  margin: 0 6px 0 0 !important;
+  outline: none;
+}

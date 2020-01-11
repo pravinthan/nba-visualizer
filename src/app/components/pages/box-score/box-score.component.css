@@ -1,0 +1,113 @@
+.page {
+  background-color: #edeef0;
+  padding: 32px;
+  margin-top: 56px;
+  min-width: 320px;
+}
+
+.content {
+  color: black;
+  width: calc(100% - 64px);
+  max-width: 1200px;
+  height: calc(100% - 56px - 96px);
+  margin: 0 auto;
+  background: white;
+  padding: 16px 32px 32px 32px;
+  border-radius: 25px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+}
+
+.score-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+}
+
+.game-date {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  font-size: large;
+  font-weight: lighter;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.away-team {
+  width: 45%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.home-team {
+  width: 45%;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.away-team-name-container {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+.home-team-name-container {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.city-name {
+  font-size: medium;
+  color: gray;
+}
+
+.nickname {
+  font-weight: 500;
+  font-size: x-large;
+}
+
+.standings {
+  margin-top: 0.25rem;
+  font-size: small;
+  color: gray;
+}
+
+.team-score {
+  display: flex;
+  align-items: center;
+  font-weight: medium;
+  font-size: xx-large;
+}
+
+.team-logo {
+  display: flex;
+  align-items: center;
+  margin: 0 1rem;
+}
+
+.team-logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.vertical-divider {
+  height: 100%;
+  margin: 0 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+  .page {
+    padding: 0;
+  }
+
+  .content {
+    border-radius: 0;
+  }
+}

@@ -1,0 +1,62 @@
+<mat-sidenav-container class="sidebar-container">
+  <mat-sidenav #sidebar class="sidebar">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <span>NBA Visualizer</span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-nav-list>
+      <a routerLink="/" style="height: 0;"></a>
+      <a
+        mat-list-item
+        (click)="sidebar.close()"
+        routerLink=""
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <mat-icon class="button-border" mat-list-icon>
+          home
+        </mat-icon>
+        Home
+      </a>
+      <mat-divider></mat-divider>
+      <a
+        mat-list-item
+        (click)="sidebar.close()"
+        routerLink="/schedule"
+        routerLinkActive="is-active"
+      >
+        <mat-icon class="button-border" mat-list-icon>
+          sports_basketball
+        </mat-icon>
+        Schedule
+      </a>
+      <a
+        mat-list-item
+        (click)="sidebar.close()"
+        routerLink="/box-score"
+        routerLinkActive="is-active"
+      >
+        <mat-icon class="button-border" mat-list-icon>
+          table_chart
+        </mat-icon>
+        Box score
+      </a>
+      <a
+        mat-list-item
+        (click)="sidebar.close()"
+        routerLink="/play-by-play"
+        routerLinkActive="is-active"
+      >
+        <mat-icon class="button-border" mat-list-icon>
+          show_chart
+        </mat-icon>
+        Play by play
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-header (toggleSidebar)="sidebar.toggle()"></app-header>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

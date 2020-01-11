@@ -1,0 +1,26 @@
+.sidebar-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.sidebar {
+  width: 20vw;
+  min-width: 250px;
+  max-width: 350px;
+}
+
+.mat-list-icon {
+  margin: 0 12px 0 12px !important;
+}
+
+.button-border {
+  outline: none;
+}
+
+.is-active {
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.06);
+}

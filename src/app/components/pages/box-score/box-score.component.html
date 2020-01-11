@@ -1,0 +1,60 @@
+<div class="page">
+  <div class="content">
+    <div class="header">
+      <div class="game-date">{{ dateET | date: "longDate" }}</div>
+      <div class="score-header">
+        <div class="away-team">
+          <div class="away-team-name-container">
+            <span class="city-name">{{
+              boxScore.basicGameData.awayTeam.cityName
+            }}</span>
+            <span class="nickname">{{
+              boxScore.basicGameData.awayTeam.nickname
+            }}</span>
+            <span class="standings">
+              {{ boxScore.basicGameData.awayTeam.wins }}-{{
+                boxScore.basicGameData.awayTeam.losses
+              }}
+            </span>
+          </div>
+          <div class="team-logo">
+            <img
+              src="assets/team-logos/{{
+                boxScore.basicGameData.awayTeam.abbreviation | lowercase
+              }}.png"
+            />
+          </div>
+          <div class="team-score">
+            {{ boxScore.basicGameData.awayTeam.score }}
+          </div>
+        </div>
+        <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
+        <div class="home-team">
+          <div class="team-score">
+            {{ boxScore.basicGameData.homeTeam.score }}
+          </div>
+          <div class="team-logo">
+            <img
+              src="assets/team-logos/{{
+                boxScore.basicGameData.homeTeam.abbreviation | lowercase
+              }}.png"
+            />
+          </div>
+          <div class="home-team-name-container">
+            <span class="city-name">{{
+              boxScore.basicGameData.homeTeam.cityName
+            }}</span>
+            <span class="nickname">{{
+              boxScore.basicGameData.homeTeam.nickname
+            }}</span>
+            <span class="standings">
+              {{ boxScore.basicGameData.homeTeam.wins }}-{{
+                boxScore.basicGameData.homeTeam.losses
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

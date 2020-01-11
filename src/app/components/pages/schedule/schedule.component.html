@@ -1,0 +1,210 @@
+<div class="page">
+  <div class="content">
+    <div class="content-header">
+      <span>NBA Schedule</span>
+      <div>
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            (dateChange)="changeDate($event)"
+            placeholder="Choose a date"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker [touchUi]="isMobile"></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="games-container" *ngFor="let gamesForDate of gamesForDates">
+      <div class="games-header" *ngIf="gamesForDate != null">
+        <div class="date">
+          <span>{{ gamesForDate.dateET | date: "fullDate" }}</span>
+        </div>
+        <div
+          class="date-note"
+          *ngIf="
+            gamesForDate.numberOfUpcomingGames == gamesForDate.games.length ||
+            !(
+              gamesForDate.numberOfFinishedGames +
+                gamesForDate.numberOfActiveGames ==
+              gamesForDate.games.length
+            )
+          "
+        >
+          <span>*All times are in ET</span>
+        </div>
+      </div>
+      <mat-table
+        [dataSource]="gamesForDate.games"
+        class="mat-elevation-z3"
+        *ngIf="gamesForDate != null"
+      >
+        <ng-container matColumnDef="awayTeam">
+          <mat-header-cell *matHeaderCellDef>Away</mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <img
+              class="team-logo"
+              src="assets/team-logos/{{
+                game.awayTeam.abbreviation | lowercase
+              }}.png"
+            />
+            {{ game.awayTeam.abbreviation }}
+            <span class="standings">
+              ({{ game.awayTeam.wins }}-{{ game.awayTeam.losses }})
+            </span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="homeTeam">
+          <mat-header-cell *matHeaderCellDef>Home</mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <img
+              class="team-logo"
+              src="assets/team-logos/{{
+                game.homeTeam.abbreviation | lowercase
+              }}.png"
+            />
+            {{ game.homeTeam.abbreviation }}
+            <span class="standings">
+              ({{ game.homeTeam.wins }}-{{ game.homeTeam.losses }})
+            </span>
+          </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="scoreOrTime">
+          <mat-header-cell *matHeaderCellDef>
+            <span
+              *ngIf="
+                gamesForDate.numberOfUpcomingGames == gamesForDate.games.length
+              "
+              >Time</span
+            >
+            <span
+              *ngIf="
+                gamesForDate.numberOfFinishedGames +
+                  gamesForDate.numberOfActiveGames ==
+                gamesForDate.games.length
+              "
+              >Score</span
+            >
+            <span
+              *ngIf="
+                !(
+                  gamesForDate.numberOfUpcomingGames ==
+                  gamesForDate.games.length
+                ) &&
+                !(
+                  gamesForDate.numberOfFinishedGames +
+                    gamesForDate.numberOfActiveGames ==
+                  gamesForDate.games.length
+                )
+              "
+            >
+              Score/Time
+            </span>
+          </mat-header-cell>
+          <mat-cell *matCellDef="let game">
+            <!-- Game has finished -->
+            <div
+              class="box-score"
+              *ngIf="!game.isActive && game.awayTeam.score != null"
+            >
+              <a
+                *ngIf="
+                  Number(game.awayTeam.score) >= Number(game.homeTeam.score)
+                "
+                target="_blank"
+                [routerLink]="['/box-score']"
+                [queryParams]="{ gameId: game.gameId }"
+              >
+                {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
+                {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
+              </a>
+              <a
+                *ngIf="
+                  Number(game.awayTeam.score) < Number(game.homeTeam.score)
+                "
+                target="_blank"
+                [routerLink]="['/box-score']"
+                [queryParams]="{ gameId: game.gameId }"
+              >
+                {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
+                {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}
+              </a>
+            </div>
+
+            <!-- Game is active -->
+            <div class="box-score-container" *ngIf="game.isActive">
+              <div class="box-score">
+                <a
+                  *ngIf="
+                    Number(game.awayTeam.score) >= Number(game.homeTeam.score)
+                  "
+                  target="_blank"
+                  [routerLink]="['/box-score']"
+                  [queryParams]="{ gameId: game.gameId }"
+                >
+                  {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
+                  {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
+                </a>
+                <a
+                  *ngIf="
+                    Number(game.awayTeam.score) < Number(game.homeTeam.score)
+                  "
+                  target="_blank"
+                  [routerLink]="['/box-score']"
+                  [queryParams]="{ gameId: game.gameId }"
+                >
+                  {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
+                  {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}
+                </a>
+              </div>
+              <div class="live-score" *ngIf="game.period.isHalftime">
+                Halftime
+              </div>
+              <div class="live-score" *ngIf="!game.period.isHalftime">
+                <span *ngIf="Number(game.period.current) <= 4">
+                  <span *ngIf="game.period.isEndOfPeriod">
+                    End of Q{{ game.period.current }}
+                  </span>
+                  <span *ngIf="!game.period.isEndOfPeriod">
+                    Q{{ game.period.current }}
+                    <span *ngIf="game.clock.includes('.')">
+                      - 0:{{ game.clock.substring(game.clock.indexOf(".")) }}
+                    </span>
+                    <span *ngIf="!game.clock.includes('.')">
+                      {{ game.clock }}
+                    </span>
+                  </span>
+                </span>
+                <span *ngIf="Number(game.period.current) > 4">
+                  <span *ngIf="game.period.isEndOfPeriod">
+                    End of OT{{ game.period.current }}
+                  </span>
+                  <span *ngIf="!game.period.isEndOfPeriod">
+                    OT{{ game.period.current - 4 }}
+                    <span *ngIf="game.clock.includes('.')">
+                      - 0:{{ game.clock.substring(game.clock.indexOf(".")) }}
+                    </span>
+                    <span *ngIf="!game.clock.includes('.')">
+                      {{ game.clock }}
+                    </span>
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Game is upcoming -->
+            <span *ngIf="!game.isActive && game.awayTeam.score == null">
+              {{ game.timeET }}
+            </span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: columns"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>
