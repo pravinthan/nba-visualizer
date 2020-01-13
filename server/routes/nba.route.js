@@ -37,7 +37,7 @@ const teams = {
 };
 
 /**
- * Get box score for a given gameon the given date
+ * Get box score for a given game on the given date
  *
  * @param gameId is the game's unique ID
  * @param date is the date of the game (1-31)
@@ -200,6 +200,80 @@ nbaRoute
       .then(boxscore => res.json(boxscore))
       .catch(err => {
         return next(err);
+      });
+  });
+
+/**
+ * Get preview article for a given game on the given date
+ *
+ * @param gameId is the game's unique ID
+ * @param date is the date of the game (1-31)
+ * @param month is the month of the game (1-12)
+ * @param year is the year of the game
+ */
+nbaRoute
+  .route("/preview-article/:gameId/:date/:month/:year")
+  .get((req, res, next) => {
+    // Prepend a "0" to the month/date if it is given without it
+    if (req.params.month.length != 2) {
+      req.params.month = "0" + req.params.month;
+    }
+    if (req.params.date.length != 2) {
+      req.params.date = "0" + req.params.date;
+    }
+
+    nba.data
+      .previewArticle({
+        gameId: req.params.gameId,
+        date: req.params.year + req.params.month + req.params.date
+      })
+      .then(previewArticle => {
+        return {
+          author: previewArticle.author,
+          authorTitle: previewArticle.authorTitle,
+          title: previewArticle.title,
+          paragraphs: previewArticle.paragraphs
+        };
+      })
+      .then(previewArticle => {
+        res.json(previewArticle);
+      });
+  });
+
+/**
+ * Get recap article for a given game on the given date
+ *
+ * @param gameId is the game's unique ID
+ * @param date is the date of the game (1-31)
+ * @param month is the month of the game (1-12)
+ * @param year is the year of the game
+ */
+nbaRoute
+  .route("/recap-article/:gameId/:date/:month/:year")
+  .get((req, res, next) => {
+    // Prepend a "0" to the month/date if it is given without it
+    if (req.params.month.length != 2) {
+      req.params.month = "0" + req.params.month;
+    }
+    if (req.params.date.length != 2) {
+      req.params.date = "0" + req.params.date;
+    }
+
+    nba.data
+      .recapArticle({
+        gameId: req.params.gameId,
+        date: req.params.year + req.params.month + req.params.date
+      })
+      .then(recapArticle => {
+        return {
+          author: recapArticle.author,
+          authorTitle: recapArticle.authorTitle,
+          title: recapArticle.title,
+          paragraphs: recapArticle.paragraphs
+        };
+      })
+      .then(recapArticle => {
+        res.json(recapArticle);
       });
   });
 

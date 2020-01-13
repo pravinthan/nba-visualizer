@@ -8,12 +8,14 @@ import {
   HttpErrorResponse
 } from "@angular/common/http";
 import { BoxScore } from "./box-score.model";
+import { Article } from "./article.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class ApiService {
   endpoint = "/api";
+  // endpoint = "http://localhost:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}
@@ -46,6 +48,40 @@ export class ApiService {
       .get<BoxScore>(API_URL, { headers: this.headers })
       .pipe(
         map((res: BoxScore) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Get preview article for a given game and date
+  getPreviewArticle(gameId: string, date: Date): Observable<any> {
+    const dateETDate = date.getDate();
+    const dateETMonth = date.getMonth() + 1;
+    const dateETYear = date.getFullYear();
+    const API_URL = `${this.endpoint}/preview-article/${gameId}/${dateETDate}/${dateETMonth}/${dateETYear}`;
+
+    return this.http
+      .get<Article>(API_URL, { headers: this.headers })
+      .pipe(
+        map((res: Article) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Get recap article for a given game and date
+  getRecapArticle(gameId: string, date: Date): Observable<any> {
+    const dateETDate = date.getDate();
+    const dateETMonth = date.getMonth() + 1;
+    const dateETYear = date.getFullYear();
+    const API_URL = `${this.endpoint}/recap-article/${gameId}/${dateETDate}/${dateETMonth}/${dateETYear}`;
+
+    return this.http
+      .get<Article>(API_URL, { headers: this.headers })
+      .pipe(
+        map((res: Article) => {
           return res || {};
         }),
         catchError(this.handleError)

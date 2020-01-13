@@ -2,7 +2,7 @@
   <mat-sidenav #sidebar class="sidebar">
     <mat-toolbar>
       <mat-toolbar-row>
-        <span>NBA Visualizer</span>
+        <span class="toolbar-title">NBA Visualizer</span>
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-nav-list>
@@ -20,6 +20,7 @@
         Home
       </a>
       <mat-divider></mat-divider>
+      <span mat-subheader>Statistics</span>
       <a
         mat-list-item
         (click)="sidebar.close()"
@@ -30,28 +31,6 @@
           sports_basketball
         </mat-icon>
         Schedule
-      </a>
-      <a
-        mat-list-item
-        (click)="sidebar.close()"
-        routerLink="/box-score"
-        routerLinkActive="is-active"
-      >
-        <mat-icon class="button-border" mat-list-icon>
-          table_chart
-        </mat-icon>
-        Box score
-      </a>
-      <a
-        mat-list-item
-        (click)="sidebar.close()"
-        routerLink="/play-by-play"
-        routerLinkActive="is-active"
-      >
-        <mat-icon class="button-border" mat-list-icon>
-          show_chart
-        </mat-icon>
-        Play by play
       </a>
     </mat-nav-list>
   </mat-sidenav>

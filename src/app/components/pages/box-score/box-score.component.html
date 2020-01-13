@@ -1,7 +1,25 @@
-<div class="page">
+<div class="page" *ngIf="boxScore != null">
   <div class="content">
     <div class="header">
-      <div class="game-date">{{ dateET | date: "longDate" }}</div>
+      <div class="game-date-container">
+        <span class="game-date">
+          {{ dateET | date: "longDate" }}
+        </span>
+        <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
+        <div class="live-game" *ngIf="boxScore.basicGameData.isActive">
+          Live
+          <div class="live-icon"></div>
+        </div>
+        <span
+          class="finished-game"
+          *ngIf="
+            !boxScore.basicGameData.isActive &&
+            boxScore.basicGameData.period.current != 0
+          "
+        >
+          Final
+        </span>
+      </div>
       <div class="score-header">
         <div class="away-team">
           <div class="away-team-name-container">
@@ -55,6 +73,509 @@
           </div>
         </div>
       </div>
+      <mat-divider></mat-divider>
+      <div class="secondary-stats-container">
+        <div class="line-score">
+          <mat-table [dataSource]="lineScoreData">
+            <ng-container matColumnDef="team">
+              <mat-header-cell
+                *matHeaderCellDef
+                class="team-abbreviation"
+              ></mat-header-cell>
+              <mat-cell
+                *matCellDef="let lineScoreTeam"
+                class="team-abbreviation"
+              >
+                {{ lineScoreTeam.abbreviation }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container
+              *ngFor="let period of lineScoreData[0].lineScore; index as i"
+              matColumnDef="{{ i + 1 }}"
+            >
+              <mat-header-cell *matHeaderCellDef>
+                <span *ngIf="i <= 3">Q{{ i + 1 }}</span>
+                <span *ngIf="i > 3">OT{{ i - 3 }}</span>
+              </mat-header-cell>
+              <mat-cell *matCellDef="let lineScoreTeam">
+                {{ lineScoreTeam.lineScore[i].score }}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="total">
+              <mat-header-cell *matHeaderCellDef class="total-score"
+                >TOTAL</mat-header-cell
+              >
+              <mat-cell *matCellDef="let lineScoreTeam" class="total-score">
+                {{ lineScoreTeam.score }}
+              </mat-cell>
+            </ng-container>
+            <mat-header-row
+              *matHeaderRowDef="lineScoreColumns"
+            ></mat-header-row>
+            <mat-row *matRowDef="let row; columns: lineScoreColumns"></mat-row>
+          </mat-table>
+        </div>
+        <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
+        <mat-divider class="stats-divider"></mat-divider>
+        <div class="stats-leaders">
+          <div class="stats-leader">
+            <span class="stats-category">Points</span>
+            <div class="players-container">
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.awayTeam.leaders.points.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.awayTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.awayTeam.leaders.points.value }}
+                  </div>
+                </div>
+              </div>
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.homeTeam.leaders.points.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.homeTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.homeTeam.leaders.points.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="stats-leader">
+            <span class="stats-category">Assists</span>
+            <div class="players-container">
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.awayTeam.leaders.assists.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.awayTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.awayTeam.leaders.assists.value }}
+                  </div>
+                </div>
+              </div>
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.homeTeam.leaders.assists.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.homeTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.homeTeam.leaders.assists.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="stats-leader">
+            <span class="stats-category">Rebounds</span>
+            <div class="players-container">
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.awayTeam.leaders.rebounds.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.awayTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.awayTeam.leaders.rebounds.value }}
+                  </div>
+                </div>
+              </div>
+              <div
+                class="player-container"
+                *ngIf="
+                  boxScore.stats.homeTeam.leaders.rebounds.players[0] as player
+                "
+              >
+                <div class="player-headshot">
+                  <img
+                    src="//ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/{{
+                      player.personId
+                    }}.png"
+                  />
+                </div>
+                <div class="player-info-container">
+                  <div class="player-info">
+                    <span class="player-name"
+                      >{{ player.firstName.charAt(0) }}.
+                      {{
+                        player.lastName.length > 7
+                          ? (player.lastName | slice: 0:7) + "..."
+                          : player.lastName
+                      }}</span
+                    >
+                    <span class="player-team-code">{{
+                      boxScore.basicGameData.homeTeam.abbreviation
+                    }}</span>
+                  </div>
+                  <div class="stats-value">
+                    {{ boxScore.stats.homeTeam.leaders.rebounds.value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+    </div>
+
+    <div class="main-content">
+      <mat-tab-group>
+        <mat-tab
+          label="Preview"
+          *ngIf="
+            previewArticle != null &&
+            boxScore.basicGameData.isPreviewArticleAvailable
+          "
+        >
+          <div class="article">
+            <span class="article-title">
+              {{ previewArticle.title }}
+            </span>
+            <div class="article-author">
+              <span *ngIf="previewArticle.author != ''">
+                {{ previewArticle.author }} &mdash;
+                {{ previewArticle.authorTitle }}
+              </span>
+            </div>
+            <div class="article-paragraphs">
+              <span
+                class="article-paragraph"
+                *ngFor="let paragraph of previewArticle.paragraphs"
+                >{{ paragraph.paragraph }}</span
+              >
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Box Score">
+          <div class="box-score-container">
+            <div
+              class="box-score-team-container"
+              *ngFor="let teamIndex of [0, 1]"
+            >
+              <div class="box-score-team">
+                <div class="team-logo">
+                  <img
+                    src="assets/team-logos/{{
+                      boxScoreData[teamIndex].abbreviation | lowercase
+                    }}.png"
+                  />
+                </div>
+                <div class="team-info">
+                  <span class="city-name">{{
+                    boxScoreData[teamIndex].cityName
+                  }}</span>
+                  <span class="nickname">{{
+                    boxScoreData[teamIndex].nickname
+                  }}</span>
+                  <span class="standings">
+                    {{ boxScoreData[teamIndex].wins }}-{{
+                      boxScoreData[teamIndex].losses
+                    }}
+                  </span>
+                </div>
+              </div>
+              <mat-table [dataSource]="boxScoreData[teamIndex].players">
+                <ng-container matColumnDef="player">
+                  <mat-header-cell *matHeaderCellDef>player</mat-header-cell>
+                  <mat-cell *matCellDef="let player"
+                    >{{ player.firstName.charAt(0) }}.
+                    {{ player.lastName }}</mat-cell
+                  >
+                  <mat-footer-cell *matFooterCellDef>Totals</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="min">
+                  <mat-header-cell *matHeaderCellDef>min</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{ player.min }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.min.substring(
+                      0,
+                      boxScoreData[teamIndex].totals.min.indexOf(":")
+                    )
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="fg">
+                  <mat-header-cell *matHeaderCellDef>fg</mat-header-cell>
+                  <mat-cell *matCellDef="let player"
+                    >{{ player.fgm }}-{{ player.fga }}</mat-cell
+                  >
+                  <mat-footer-cell *matFooterCellDef
+                    >{{ boxScoreData[teamIndex].totals.fgm }}-{{
+                      boxScoreData[teamIndex].totals.fga
+                    }}({{
+                      boxScoreData[teamIndex].totals.fgp
+                    }})</mat-footer-cell
+                  >
+                </ng-container>
+
+                <ng-container matColumnDef="ft">
+                  <mat-header-cell *matHeaderCellDef>ft</mat-header-cell>
+                  <mat-cell *matCellDef="let player"
+                    >{{ player.ftm }}-{{ player.fta }}</mat-cell
+                  >
+                  <mat-footer-cell *matFooterCellDef
+                    >{{ boxScoreData[teamIndex].totals.ftm }}-{{
+                      boxScoreData[teamIndex].totals.fta
+                    }}({{
+                      boxScoreData[teamIndex].totals.ftp
+                    }})</mat-footer-cell
+                  >
+                </ng-container>
+
+                <ng-container matColumnDef="3pt">
+                  <mat-header-cell *matHeaderCellDef>3pt</mat-header-cell>
+                  <mat-cell *matCellDef="let player"
+                    >{{ player.tpm }}-{{ player.tpa }}</mat-cell
+                  >
+                  <mat-footer-cell *matFooterCellDef
+                    >{{ boxScoreData[teamIndex].totals.tpm }}-{{
+                      boxScoreData[teamIndex].totals.tpa
+                    }}({{
+                      boxScoreData[teamIndex].totals.tpp
+                    }})</mat-footer-cell
+                  >
+                </ng-container>
+
+                <ng-container matColumnDef="plusMinus">
+                  <mat-header-cell *matHeaderCellDef>+/-</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.plusMinus
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>-</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="oreb">
+                  <mat-header-cell *matHeaderCellDef>oreb</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.offReb
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.offReb
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="reb">
+                  <mat-header-cell *matHeaderCellDef>reb</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.totReb
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.totReb
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ast">
+                  <mat-header-cell *matHeaderCellDef>ast</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.assists
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.assists
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="blk">
+                  <mat-header-cell *matHeaderCellDef>blk</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.blocks
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.blocks
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="stl">
+                  <mat-header-cell *matHeaderCellDef>stl</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.steals
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.steals
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="to">
+                  <mat-header-cell *matHeaderCellDef>to</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.turnovers
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.turnovers
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pf">
+                  <mat-header-cell *matHeaderCellDef>pf</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.pFouls
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.pFouls
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="pts">
+                  <mat-header-cell *matHeaderCellDef>pts</mat-header-cell>
+                  <mat-cell *matCellDef="let player">{{
+                    player.points
+                  }}</mat-cell>
+                  <mat-footer-cell *matFooterCellDef>{{
+                    boxScoreData[teamIndex].totals.points
+                  }}</mat-footer-cell>
+                </ng-container>
+
+                <mat-header-row
+                  *matHeaderRowDef="boxScoreColumns"
+                ></mat-header-row>
+                <mat-row
+                  *matRowDef="let row; columns: boxScoreColumns"
+                ></mat-row>
+                <mat-footer-row
+                  *matFooterRowDef="boxScoreColumns"
+                ></mat-footer-row>
+              </mat-table>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab
+          label="Recap"
+          *ngIf="
+            recapArticle != null &&
+            boxScore.basicGameData.isRecapArticleAvailable
+          "
+        >
+          <div class="article">
+            <span class="article-title">
+              {{ recapArticle.title }}
+            </span>
+            <span class="article-author">
+              {{ recapArticle.author }} &mdash; {{ recapArticle.authorTitle }}
+            </span>
+            <div class="article-paragraphs">
+              <span
+                class="article-paragraph"
+                *ngFor="let paragraph of recapArticle.paragraphs"
+                >{{ paragraph.paragraph }}</span
+              >
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </div>
   </div>
 </div>

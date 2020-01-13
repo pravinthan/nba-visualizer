@@ -12,7 +12,7 @@
   height: calc(100% - 56px - 96px);
   margin: 0 auto;
   background: white;
-  padding: 16px 32px 32px 32px;
+  padding: 16px 32px;
   border-radius: 25px;
 }
 
@@ -33,6 +33,10 @@
 
 .games-container {
   margin-bottom: 2rem;
+}
+
+.games-container:last-of-type {
+  margin-bottom: 0;
 }
 
 .games-container mat-table {
@@ -99,97 +103,6 @@
   color: green;
   font-size: small;
   font-weight: bold;
-}
-
-.live-icon {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  margin: 6px 0 0 6px;
-}
-
-.live-icon:before {
-  content: "";
-  position: relative;
-  display: block;
-  width: 225%;
-  height: 225%;
-  box-sizing: border-box;
-  margin-left: -60%;
-  margin-top: -60%;
-  border-radius: 25px;
-  background-color: green;
-  -webkit-animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1)
-    infinite;
-  animation: pulse-ring 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
-}
-
-.live-icon:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: green;
-  border-radius: 15px;
-  box-shadow: 0 0 8px rgba(0, 255, 0, 0.3);
-  -webkit-animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s
-    infinite;
-  animation: pulse-dot 1.25s cubic-bezier(0.455, 0.03, 0.515, 0.955) -0.4s infinite;
-}
-
-@-webkit-keyframes pulse-ring {
-  0% {
-    -webkit-transform: scale(0.33);
-    transform: scale(0.33);
-  }
-  80%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@keyframes pulse-ring {
-  0% {
-    -webkit-transform: scale(0.33);
-    transform: scale(0.33);
-  }
-  80%,
-  100% {
-    opacity: 0;
-  }
-}
-
-@-webkit-keyframes pulse-dot {
-  0% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
-  50% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-  100% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
-}
-
-@keyframes pulse-dot {
-  0% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
-  50% {
-    -webkit-transform: scale(1);
-    transform: scale(1);
-  }
-  100% {
-    -webkit-transform: scale(0.8);
-    transform: scale(0.8);
-  }
 }
 
 @media only screen and (max-width: 768px) {

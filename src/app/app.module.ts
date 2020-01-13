@@ -17,7 +17,9 @@ import {
   MatListModule,
   MatSelectModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatTabsModule,
+  MatSnackBarModule
 } from "@angular/material";
 
 import { AppRoutingModule } from "./app-routing.module";
@@ -60,9 +62,11 @@ import { CommonModule } from "@angular/common";
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatTableModule,
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatDividerModule,
-    MatTableModule,
+    MatTabsModule,
     MatPaginatorModule,
     LayoutModule
   ],

@@ -1,33 +1,35 @@
-<div class="home-image"></div>
-<div class="home-text">
-  <div>
-    <span style="font-size: xx-large; font-weight: bold;">
-      Welcome to NBA Visualizer
-    </span>
-  </div>
-  <div style="margin-top: 0.5rem;">
-    <span>
-      A hub for user-friendly NBA statistics
-    </span>
-  </div>
-  <div class="links">
-    <a mat-flat-button routerLink="/schedule" routerLinkActive="is-active">
-      <mat-icon mat-list-icon>
-        sports_basketball
-      </mat-icon>
-      Schedule
-    </a>
-    <a mat-flat-button routerLink="/box-score" routerLinkActive="is-active">
-      <mat-icon mat-list-icon>
-        table_chart
-      </mat-icon>
-      Box score
-    </a>
-    <a mat-flat-button routerLink="/play-by-play" routerLinkActive="is-active">
-      <mat-icon mat-list-icon>
-        show_chart
-      </mat-icon>
-      Play by play
-    </a>
+<div class="home">
+  <div class="home-text">
+    <div>
+      <span style="font-size: xx-large; font-weight: bold;">
+        Welcome to NBA Visualizer
+      </span>
+    </div>
+    <div style="margin-top: 0.5rem;">
+      <span>
+        A hub for user-friendly NBA statistics
+      </span>
+    </div>
+    <div class="links">
+      <span>Features: </span>
+      <a mat-flat-button routerLink="/schedule">
+        <mat-icon mat-list-icon>
+          sports_basketball
+        </mat-icon>
+        Schedule
+      </a>
+      <a mat-flat-button (click)="openSnackBar()">
+        <mat-icon mat-list-icon>
+          table_chart
+        </mat-icon>
+        Box score
+      </a>
+      <a mat-flat-button (click)="openSnackBar()">
+        <mat-icon mat-list-icon>
+          show_chart
+        </mat-icon>
+        Play-by-play
+      </a>
+    </div>
   </div>
 </div>

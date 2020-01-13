@@ -1,0 +1,14 @@
+.toolbar {
+  position: fixed;
+  z-index: 999;
+  background: linear-gradient(to right, #009fff, #ec2f4b);
+}
+
+@media (max-width: 768px) and (min-width: 250px) {
+  .toolbar-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}

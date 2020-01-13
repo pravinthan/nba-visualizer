@@ -8,7 +8,7 @@ import { HomeComponent } from "./components/pages/home/home.component";
 const routes: Routes = [
   { path: "", pathMatch: "full", component: HomeComponent },
   { path: "schedule", component: ScheduleComponent },
-  { path: "box-score", component: BoxScoreComponent },
+  { path: "box-score/:dateET/:gameId", component: BoxScoreComponent },
   { path: "play-by-play", component: PlayByPlayComponent },
   { path: "**", redirectTo: "" }
 ];

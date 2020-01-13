@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" *ngIf="gamesForDates != null">
   <div class="content">
     <div class="content-header">
       <span>NBA Schedule</span>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="games-container" *ngFor="let gamesForDate of gamesForDates">
-      <div class="games-header" *ngIf="gamesForDate != null">
+      <div class="games-header">
         <div class="date">
           <span>{{ gamesForDate.dateET | date: "fullDate" }}</span>
         </div>
@@ -38,11 +38,7 @@
           <span>*All times are in ET</span>
         </div>
       </div>
-      <mat-table
-        [dataSource]="gamesForDate.games"
-        class="mat-elevation-z3"
-        *ngIf="gamesForDate != null"
-      >
+      <mat-table [dataSource]="gamesForDate.games" class="mat-elevation-z3">
         <ng-container matColumnDef="awayTeam">
           <mat-header-cell *matHeaderCellDef>Away</mat-header-cell>
           <mat-cell *matCellDef="let game">
@@ -116,8 +112,7 @@
                   Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                 "
                 target="_blank"
-                [routerLink]="['/box-score']"
-                [queryParams]="{ gameId: game.gameId }"
+                [routerLink]="['/box-score', game.dateET, game.gameId]"
               >
                 {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
                 {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
@@ -127,8 +122,7 @@
                   Number(game.awayTeam.score) < Number(game.homeTeam.score)
                 "
                 target="_blank"
-                [routerLink]="['/box-score']"
-                [queryParams]="{ gameId: game.gameId }"
+                [routerLink]="['/box-score', game.dateET, game.gameId]"
               >
                 {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
                 {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}
@@ -136,15 +130,21 @@
             </div>
 
             <!-- Game is active -->
-            <div class="box-score-container" *ngIf="game.isActive">
+            <div
+              class="box-score-container"
+              *ngIf="
+                game.isActive &&
+                game.period != null &&
+                Number(game.period.current) >= 0
+              "
+            >
               <div class="box-score">
                 <a
                   *ngIf="
                     Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                   "
                   target="_blank"
-                  [routerLink]="['/box-score']"
-                  [queryParams]="{ gameId: game.gameId }"
+                  [routerLink]="['/box-score', game.dateET, game.gameId]"
                 >
                   {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
                   {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
@@ -154,8 +154,7 @@
                     Number(game.awayTeam.score) < Number(game.homeTeam.score)
                   "
                   target="_blank"
-                  [routerLink]="['/box-score']"
-                  [queryParams]="{ gameId: game.gameId }"
+                  [routerLink]="['/box-score', game.dateET, game.gameId]"
                 >
                   {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
                   {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}
@@ -170,13 +169,7 @@
                     End of Q{{ game.period.current }}
                   </span>
                   <span *ngIf="!game.period.isEndOfPeriod">
-                    Q{{ game.period.current }}
-                    <span *ngIf="game.clock.includes('.')">
-                      - 0:{{ game.clock.substring(game.clock.indexOf(".")) }}
-                    </span>
-                    <span *ngIf="!game.clock.includes('.')">
-                      {{ game.clock }}
-                    </span>
+                    Q{{ game.period.current }} {{ game.clock }}
                   </span>
                 </span>
                 <span *ngIf="Number(game.period.current) > 4">
@@ -184,13 +177,7 @@
                     End of OT{{ game.period.current }}
                   </span>
                   <span *ngIf="!game.period.isEndOfPeriod">
-                    OT{{ game.period.current - 4 }}
-                    <span *ngIf="game.clock.includes('.')">
-                      - 0:{{ game.clock.substring(game.clock.indexOf(".")) }}
-                    </span>
-                    <span *ngIf="!game.clock.includes('.')">
-                      {{ game.clock }}
-                    </span>
+                    OT{{ game.period.current - 4 }} {{ game.clock }}
                   </span>
                 </span>
               </div>

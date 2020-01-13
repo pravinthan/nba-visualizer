@@ -52,11 +52,11 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  initializeSchedule(startDate: Date, dayIncrement: number) {
+  async initializeSchedule(startDate: Date, dayIncrement: number) {
     var date: Date = new Date(startDate);
     date.setDate(date.getDate() + dayIncrement);
 
-    return Promise.resolve(
+    return await Promise.resolve(
       this.api
         .getSchedule(date)
         .toPromise()
