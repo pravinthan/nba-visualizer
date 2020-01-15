@@ -14,8 +14,8 @@ import { Article } from "./article.model";
   providedIn: "root"
 })
 export class ApiService {
-  endpoint = "/api";
-  // endpoint = "http://localhost:4201/api";
+  // endpoint = "/api";
+  endpoint = "http://localhost:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}

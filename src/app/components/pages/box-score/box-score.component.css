@@ -227,8 +227,7 @@
 
 .line-score {
   width: 25%;
-  min-width: 235px;
-  padding-left: 1rem;
+  padding: 0 1rem;
 }
 
 .line-score mat-header-row {
@@ -334,10 +333,6 @@ mat-header-cell:last-of-type {
   color: gray;
 }
 
-.main-content {
-  margin: 16px 0;
-}
-
 .article {
   padding: 1rem;
 }
@@ -385,14 +380,13 @@ mat-header-cell:last-of-type {
   text-transform: uppercase;
 }
 
-.box-score-container mat-footer-cell {
-  font-weight: bold;
-}
-
 .box-score-container mat-cell,
 .box-score-container mat-footer-cell {
   font-size: small;
-  white-space: wrap;
+}
+
+.box-score-container mat-footer-cell {
+  font-weight: bold;
 }
 
 .box-score-team {
@@ -409,18 +403,17 @@ mat-header-cell:last-of-type {
   margin-left: 0;
 }
 
+/* Selects name column */
 .box-score-container mat-cell:first-of-type,
 .box-score-container mat-header-cell:first-of-type,
 .box-score-container mat-footer-cell:first-of-type {
   flex: 1 0 75px;
 }
 
+/* Selects min, fg, ft, 3pt columns */
 .box-score-container mat-cell:nth-of-type(2),
 .box-score-container mat-header-cell:nth-of-type(2),
-.box-score-container mat-footer-cell:nth-of-type(2) {
-  flex: 1 0 20px;
-}
-
+.box-score-container mat-footer-cell:nth-of-type(2),
 .box-score-container mat-cell:nth-of-type(3),
 .box-score-container mat-header-cell:nth-of-type(3),
 .box-score-container mat-footer-cell:nth-of-type(3),
@@ -430,55 +423,28 @@ mat-header-cell:last-of-type {
 .box-score-container mat-cell:nth-of-type(5),
 .box-score-container mat-header-cell:nth-of-type(5),
 .box-score-container mat-footer-cell:nth-of-type(5) {
-  flex: 1 0 50px;
+  flex: 1 0 20px;
 }
 
+/* Selects oreb column */
 .box-score-container mat-cell:nth-of-type(7),
 .box-score-container mat-header-cell:nth-of-type(7),
 .box-score-container mat-footer-cell:nth-of-type(7) {
   flex: 1 0 10px;
 }
 
-@media (max-width: 768px) {
-  .page {
-    padding: 0;
-  }
-
-  .content {
-    border-radius: 0;
-  }
-}
-
-@media (max-width: 1550px) {
-  .box-score-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .box-score-team-container {
-    width: 75%;
-    margin-right: 0;
-    margin-bottom: 3rem;
-  }
-
-  .box-score-team-container:last-of-type {
-    margin-bottom: 0;
-  }
-}
-
-@media (max-width: 1200px) {
+@media (max-width: 1350px) {
   .secondary-stats-container {
     flex-direction: column;
     align-items: flex-start;
+    width: stretch;
     height: 100%;
     padding: 0;
   }
 
-  .line-score {
-    width: 100%;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: stretch;
+  .line-score,
+  .stats-leaders {
+    width: inherit;
     padding: 1rem;
   }
 
@@ -493,22 +459,23 @@ mat-header-cell:last-of-type {
     display: block;
   }
 
-  .stats-leaders {
-    width: 100%;
-    width: -moz-available;
-    width: -webkit-fill-available;
-    width: stretch;
-    padding: 1rem;
+  .box-score-container {
+    flex-direction: column;
+    align-items: center;
   }
-}
 
-@media (max-width: 935px) {
   .box-score-team-container {
     width: 100%;
+    margin-right: 0;
+    margin-bottom: 3rem;
+  }
+
+  .box-score-team-container:last-of-type {
+    margin-bottom: 0;
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 950px) {
   .stats-category {
     width: 70px;
   }
@@ -528,18 +495,15 @@ mat-header-cell:last-of-type {
   }
 }
 
-@media (max-width: 675px) {
-  .box-score-container mat-table {
-    overflow-x: auto;
-    min-width: 600px;
+@media (max-width: 768px) {
+  .page {
+    padding: 0;
   }
 
-  .box-score-team {
-    justify-content: flex-start;
+  .content {
+    border-radius: 0;
   }
-}
 
-@media (max-width: 600px) {
   .score-header {
     height: unset;
     flex-direction: column;
@@ -570,6 +534,21 @@ mat-header-cell:last-of-type {
 
   .team-score {
     margin-left: auto;
+  }
+
+  .line-score,
+  .stats-leaders,
+  .box-score-container {
+    padding: 1rem 0;
+  }
+
+  .box-score-container mat-table {
+    overflow-x: auto;
+    min-width: 600px;
+  }
+
+  .box-score-team {
+    justify-content: flex-start;
   }
 }
 

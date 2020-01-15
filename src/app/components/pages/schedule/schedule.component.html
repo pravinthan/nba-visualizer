@@ -111,7 +111,6 @@
                 *ngIf="
                   Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                 "
-                target="_blank"
                 [routerLink]="['/box-score', game.dateET, game.gameId]"
               >
                 {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
@@ -121,7 +120,6 @@
                 *ngIf="
                   Number(game.awayTeam.score) < Number(game.homeTeam.score)
                 "
-                target="_blank"
                 [routerLink]="['/box-score', game.dateET, game.gameId]"
               >
                 {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
@@ -143,7 +141,6 @@
                   *ngIf="
                     Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                   "
-                  target="_blank"
                   [routerLink]="['/box-score', game.dateET, game.gameId]"
                 >
                   {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
@@ -153,7 +150,6 @@
                   *ngIf="
                     Number(game.awayTeam.score) < Number(game.homeTeam.score)
                   "
-                  target="_blank"
                   [routerLink]="['/box-score', game.dateET, game.gameId]"
                 >
                   {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -

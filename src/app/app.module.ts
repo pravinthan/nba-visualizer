@@ -21,6 +21,10 @@ import {
   MatTabsModule,
   MatSnackBarModule
 } from "@angular/material";
+import { LayoutModule } from "@angular/cdk/layout";
+import { CommonModule } from "@angular/common";
+import * as PlotlyJS from "plotly.js/dist/plotly.js";
+import { PlotlyModule } from "angular-plotly.js";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -31,8 +35,8 @@ import { NavigationComponent } from "./components/navigation/navigation.componen
 import { BoxScoreComponent } from "./components/pages/box-score/box-score.component";
 import { PlayByPlayComponent } from "./components/pages/play-by-play/play-by-play.component";
 import { ScheduleComponent } from "./components/pages/schedule/schedule.component";
-import { LayoutModule } from "@angular/cdk/layout";
-import { CommonModule } from "@angular/common";
+
+PlotlyModule.plotlyjs = PlotlyJS;
 
 @NgModule({
   declarations: [

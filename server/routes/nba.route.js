@@ -278,18 +278,69 @@ nbaRoute
   });
 
 /**
- * Get play by play data for a given game
+ * Get play-by-play data for a given game on a given day
  *
  * @param gameId is the game's unique ID
+ * @param date is the date of the game (1-31)
+ * @param month is the month of the game (1-12)
+ * @param year is the year of the game
  */
-nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
-  nba.stats
-    .playByPlay({ GameID: req.params.gameId, StartPeriod: 0, EndPeriod: 14 })
-    .then(playByPlay => res.json(playByPlay))
-    .catch(err => {
-      return next(err);
-    });
-});
+nbaRoute
+  .route("/play-by-play/:gameId/:date/:month/:year")
+  .get((req, res, next) => {
+    // Prepend a "0" to the month/date if it is given without it
+    if (req.params.month.length != 2) {
+      req.params.month = "0" + req.params.month;
+    }
+    if (req.params.date.length != 2) {
+      req.params.date = "0" + req.params.date;
+    }
+
+    nba.data
+      .miniBoxscore({
+        gameId: req.params.gameId,
+        date: req.params.year + req.params.month + req.params.date
+      })
+      .then(async miniBoxscore => {
+        let playByPlays = {
+          periods: []
+        };
+
+        const currentPeriod = miniBoxscore.basicGameData.period.current;
+        for (let periodIndex = 0; periodIndex < currentPeriod; periodIndex++) {
+          let playByPlay = await nba.data.pbp({
+            date: req.params.year + req.params.month + req.params.date,
+            gameId: req.params.gameId,
+            period: periodIndex + 1
+          });
+
+          playByPlay.plays.forEach((play, playIndex) => {
+            playByPlay.plays[playIndex] = {
+              clock: play.clock,
+              eventMessageType: play.eventMsgType,
+              description: play.description,
+              formattedDescription: play.formatted.description,
+              personId: play.personId,
+              teamId: play.teamId,
+              awayTeamScore: play.vTeamScore,
+              homeTeamScore: play.hTeamScore,
+              isScoreChange: play.isScoreChange,
+              isVideoAvailable: play.isVideoAvailable
+            };
+          });
+
+          playByPlays.periods.push({
+            plays: playByPlay.plays
+          });
+        }
+
+        return playByPlays;
+      })
+      .then(playByPlay => res.json(playByPlay))
+      .catch(err => {
+        return next(err);
+      });
+  });
 
 /** Get past games for current season */
 nbaRoute.route("/past-games").get((req, res, next) => {
