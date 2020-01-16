@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://nba.pravinthan.com">
-    <img src="src/assets/icon_512x512.png" alt="NBA Visualizer" width="10%" height="10%" />
+    <img src="src/assets/icon_512x512.png" alt="NBA Visualizer" width="20%" height="20%" />
   </a>
 </p>
 
