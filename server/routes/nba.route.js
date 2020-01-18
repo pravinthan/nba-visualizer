@@ -1,6 +1,7 @@
 const express = require("express");
 const nba = require("nba.js").default;
 const nbaRoute = express.Router();
+require("cross-fetch/polyfill");
 
 const teams = {
   "1610612737": { fullName: "Atlanta Hawks", abbreviation: "ATL" },
@@ -286,14 +287,14 @@ nbaRoute
  * @return {Promise}
  */
 function flattenResultSet(resultSets) {
-  return new Promise(function(resolve, reject) {
+  return new Promise((resolve, reject) => {
     var flattened = {};
 
-    resultSets.forEach(function(result, i) {
-      flattened[result.name] = result.rowSet.map(function(row, j) {
+    resultSets.forEach((result, i) => {
+      flattened[result.name] = result.rowSet.map((row, j) => {
         var mappedRow = {};
 
-        row.forEach(function(value, k) {
+        row.forEach((value, k) => {
           var key = result.headers[k].toLowerCase();
           mappedRow[key] = value;
         });
@@ -312,17 +313,25 @@ function flattenResultSet(resultSets) {
  * @param gameId is the game's unique ID
  */
 nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
-  nba.stats
-    .playByPlay({ GameID: req.params.gameId, StartPeriod: 0, EndPeriod: 14 })
-    .then(playByPlayData => {
-      let playByPlay = { periods: [] };
-      playByPlayData.PlayByPlay.forEach(play => {
+  fetch(
+    `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    {
+      headers: {
+        Referer: "http://stats.nba.com"
+      }
+    }
+  )
+    .then(response => response.json())
+    .then(responseJson => flattenResultSet(responseJson.resultSets))
+    .then(playByPlay => {
+      let newPlayByPlay = { periods: [] };
+      playByPlay.PlayByPlay.forEach(play => {
         const playPeriod = play.period - 1;
-        if (playByPlay.periods[playPeriod] == null) {
-          playByPlay.periods[playPeriod] = { plays: [] };
+        if (newPlayByPlay.periods[playPeriod] == null) {
+          newPlayByPlay.periods[playPeriod] = { plays: [] };
         }
 
-        playByPlay.periods[playPeriod].plays.push({
+        newPlayByPlay.periods[playPeriod].plays.push({
           clock: play.pctimestring,
           eventNum: play.eventnum,
           eventMsgType: play.eventmsgtype,
@@ -330,18 +339,19 @@ nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
           awayDescription: play.visitordescription,
           neutralDescription: play.neutraldescription,
           homeDescription: play.homedescription,
-          awayScore:
+          awayTeamScore:
             play.score != null
               ? play.score.substring(0, play.score.indexOf("-") - 1)
               : null,
-          homeScore:
+          homeTeamScore:
             play.score != null
               ? play.score.substring(play.score.indexOf("-") + 2)
-              : null
+              : null,
+          isVideoAvailable: play.isVideoAvailable
         });
       });
 
-      return playByPlay;
+      return newPlayByPlay;
     })
     .then(playByPlay => res.json(playByPlay))
     .catch(err => {

@@ -10,8 +10,9 @@ export class PlayByPlay {
           awayDescription: string;
           neutralDescription: string;
           homeDescription: string;
-          awayScore: number;
-          homeScore: number;
+          awayTeamScore: number;
+          homeTeamScore: number;
+          isVideoAvailable: boolean;
         }
       ];
     }

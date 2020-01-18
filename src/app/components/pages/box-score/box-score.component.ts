@@ -254,7 +254,8 @@ export class BoxScoreComponent implements OnInit {
 
             var playMarkerSymbols = [];
             playByPlayPeriod.plays.forEach(play => {
-              if (play.isScoreChange) {
+              // If score changed
+              if (play.awayTeamScore) {
                 // Will need a full date in order to display it on plotly as a time
                 coordinates.x.push("1970-01-01 00:" + play.clock);
                 coordinates.y.push(play.awayTeamScore - play.homeTeamScore);
@@ -264,7 +265,7 @@ export class BoxScoreComponent implements OnInit {
                   : playMarkerSymbols.push("circle-open");
               }
             });
-            console.log(playMarkerSymbols)
+            console.log(playMarkerSymbols);
 
             periods.push({
               x: coordinates.x,
