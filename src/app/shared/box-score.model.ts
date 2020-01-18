@@ -19,6 +19,7 @@ type StatsTeamLeaderData = {
 };
 
 type StatsTeamData = {
+  biggestLead: number;
   totals: {
     points: number;
     fgm: number;

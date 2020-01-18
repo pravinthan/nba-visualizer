@@ -1,6 +1,5 @@
 const express = require("express");
 const nba = require("nba.js").default;
-require("cross-fetch/polyfill");
 const nbaRoute = express.Router();
 
 const teams = {
@@ -94,6 +93,7 @@ nbaRoute
           },
           stats: {
             awayTeam: {
+              biggestLead: parseInt(boxscore.stats.vTeam.biggestLead),
               totals: {
                 points: boxscore.stats.vTeam.totals.points,
                 fgm: boxscore.stats.vTeam.totals.fgm,
@@ -133,6 +133,7 @@ nbaRoute
               }
             },
             homeTeam: {
+              biggestLead: parseInt(boxscore.stats.hTeam.biggestLead),
               totals: {
                 points: boxscore.stats.hTeam.totals.points,
                 fgm: boxscore.stats.hTeam.totals.fgm,

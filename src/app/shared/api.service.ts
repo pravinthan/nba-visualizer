@@ -9,6 +9,7 @@ import {
 } from "@angular/common/http";
 import { BoxScore } from "./box-score.model";
 import { Article } from "./article.model";
+import { PlayByPlay } from "./play-by-play.model";
 
 @Injectable({
   providedIn: "root"
@@ -82,6 +83,23 @@ export class ApiService {
       .get<Article>(API_URL, { headers: this.headers })
       .pipe(
         map((res: Article) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Get play-by-play data for a given game and date
+  getPlayByPlay(gameId: string, date: Date): Observable<any> {
+    const dateETDate = date.getDate();
+    const dateETMonth = date.getMonth() + 1;
+    const dateETYear = date.getFullYear();
+    const API_URL = `${this.endpoint}/play-by-play/${gameId}/${dateETDate}/${dateETMonth}/${dateETYear}`;
+
+    return this.http
+      .get<PlayByPlay>(API_URL, { headers: this.headers })
+      .pipe(
+        map((res: PlayByPlay) => {
           return res || {};
         }),
         catchError(this.handleError)

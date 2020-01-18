@@ -72,7 +72,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     MatDividerModule,
     MatTabsModule,
     MatPaginatorModule,
-    LayoutModule
+    LayoutModule,
+    PlotlyModule
   ],
   providers: [ApiService],
   bootstrap: [AppComponent]

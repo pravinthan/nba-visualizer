@@ -3,6 +3,7 @@ import { BoxScore } from "src/app/shared/box-score.model";
 import { ApiService } from "src/app/shared/api.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Article } from "src/app/shared/article.model";
+import { PlayByPlay } from "src/app/shared/play-by-play.model";
 
 interface LineScoreTeam {
   abbreviation: string;
@@ -132,6 +133,7 @@ export class BoxScoreComponent implements OnInit {
   ];
   previewArticle: Article;
   recapArticle: Article;
+  playByPlay: any;
 
   constructor(
     private api: ApiService,
@@ -148,7 +150,8 @@ export class BoxScoreComponent implements OnInit {
       this.dateET = new Date(dateETYear, dateETMonth - 1, dateETDate);
       this.dateET.setHours(0, 0, 0, 0);
 
-      this.getScore(params.gameId, this.dateET)
+      // Get box score then preview and recap articles
+      this.getBoxScore(params.gameId, this.dateET)
         .then(boxScore => {
           this.boxScore = boxScore;
           return boxScore;
@@ -231,6 +234,100 @@ export class BoxScoreComponent implements OnInit {
           ) => (player1.sortKey.min > player2.sortKey.min ? 1 : -1);
           this.boxScoreData[0].players.sort(sortingFunction);
           this.boxScoreData[1].players.sort(sortingFunction);
+
+          return boxScore;
+        })
+        .then(async boxScore => {
+          // Get play-by-play data
+          return {
+            boxScore: boxScore,
+            playByPlay: await this.getPlayByPlay(params.gameId, this.dateET)
+          };
+        })
+        .then(({ boxScore, playByPlay }) => {
+          var periods = [];
+          playByPlay.periods.forEach((playByPlayPeriod, periodIndex) => {
+            var coordinates = {
+              x: [],
+              y: []
+            };
+
+            var playMarkerSymbols = [];
+            playByPlayPeriod.plays.forEach(play => {
+              if (play.isScoreChange) {
+                // Will need a full date in order to display it on plotly as a time
+                coordinates.x.push("1970-01-01 00:" + play.clock);
+                coordinates.y.push(play.awayTeamScore - play.homeTeamScore);
+
+                play.isVideoAvailable
+                  ? playMarkerSymbols.push("circle")
+                  : playMarkerSymbols.push("circle-open");
+              }
+            });
+            console.log(playMarkerSymbols)
+
+            periods.push({
+              x: coordinates.x,
+              y: coordinates.y,
+              xaxis: "x" + (periodIndex != 0 ? periodIndex + 1 : ""),
+              yaxis: "y",
+              mode: "lines+markers",
+              line: {
+                shape: "spline",
+                smoothing: 0.3,
+                width: 3
+              },
+              marker: {
+                size: 8,
+                symbol: playMarkerSymbols
+              },
+              type: "scatter"
+            });
+          });
+
+          this.playByPlay = {
+            data: periods,
+            layout: {
+              autosize: true,
+              grid: {
+                rows: 1,
+                columns: periods.length,
+                xgap: 0.05
+              },
+              yaxis: {
+                fixedrange: true,
+                showgrid: false,
+                range: [
+                  -(boxScore.stats.homeTeam.biggestLead + 2),
+                  boxScore.stats.awayTeam.biggestLead + 2
+                ]
+              }
+            }
+          };
+
+          for (
+            let periodIndex = 0;
+            periodIndex < periods.length;
+            periodIndex++
+          ) {
+            this.playByPlay.layout[
+              "xaxis" + (periodIndex != 0 ? periodIndex + 1 : "")
+            ] = {
+              fixedrange: true,
+              showgrid: false,
+              type: "date",
+              tickformat: "%M:%S",
+              autorange: "reversed",
+              title: {
+                text:
+                  periodIndex <= 3
+                    ? "Q" + (periodIndex + 1)
+                    : "OT" + (periodIndex - 3)
+              }
+            };
+          }
+
+          console.log(this.playByPlay);
         })
         .catch(() => {
           this.router.navigate(["/home"]);
@@ -238,7 +335,7 @@ export class BoxScoreComponent implements OnInit {
     });
   }
 
-  getScore(gameId: string, date: Date): Promise<BoxScore> {
+  getBoxScore(gameId: string, date: Date): Promise<BoxScore> {
     return this.api.getBoxScore(gameId, date).toPromise();
   }
 
@@ -249,4 +346,43 @@ export class BoxScoreComponent implements OnInit {
   getRecapArticle(gameId: string, date: Date): Promise<Article> {
     return this.api.getRecapArticle(gameId, date).toPromise();
   }
+
+  getPlayByPlay(gameId: string, date: Date): Promise<PlayByPlay> {
+    return this.api.getPlayByPlay(gameId, date).toPromise();
+  }
+}
+
+// Interpolate between two colors
+function interpolateColors(
+  color1String: string,
+  color2String: string,
+  steps: number
+): string[] {
+  const stepFactor = 1 / (steps - 1);
+  var interpolatedColorArray: string[] = [];
+
+  const color1 = color1String.match(/\d+/g).map(Number);
+  const color2 = color2String.match(/\d+/g).map(Number);
+
+  for (var i = 0; i < steps; i++) {
+    interpolatedColorArray.push(
+      interpolateColor(color1, color2, stepFactor * i)
+    );
+  }
+
+  return interpolatedColorArray;
+}
+
+// Returns a single rgb color interpolation between given rgb color
+function interpolateColor(
+  color1: number[],
+  color2: number[],
+  factor: number
+): string {
+  var result = color1.slice();
+  for (var i = 0; i < 3; i++) {
+    result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
+  }
+
+  return "rgb(" + result.toString() + ")";
 }
