@@ -4,15 +4,14 @@ export class PlayByPlay {
       plays: [
         {
           clock: string;
-          eventMessageType: number;
-          description: string;
-          formattedDescription: string;
-          personId: number;
-          teamId: number;
-          awayTeamScore: number;
-          homeTeamScore: number;
-          isScoreChange: boolean;
-          isVideoAvailable: boolean;
+          eventNum: number;
+          eventMsgType: number;
+          eventMsgActionType: number;
+          awayDescription: string;
+          neutralDescription: string;
+          homeDescription: string;
+          awayScore: number;
+          homeScore: number;
         }
       ];
     }
