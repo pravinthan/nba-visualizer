@@ -28,6 +28,7 @@
     "hammerjs": "^2.0.8",
     "nba.js": "^0.6.1",
     "nodemon": "^2.0.2",
+    "request": "^2.88.0",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "typescript": "~3.5.3",
