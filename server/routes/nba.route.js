@@ -314,11 +314,11 @@ function flattenResultSet(resultSets) {
  */
 nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
   fetch(
-    `https://cors-anywhere.herokuapp.com/http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    `https://cors-anywhere.herokuapp.com/https://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
     {
       headers: {
-        Referer: "http://stats.nba.com",
-        Origin: "http://stats.nba.com"
+        Referer: "https://stats.nba.com",
+        Origin: "https://stats.nba.com"
       }
     }
   )
@@ -375,11 +375,11 @@ nbaRoute
   .route("/play-by-play-video-url/:gameId/:eventNum")
   .get((req, res, next) => {
     fetch(
-      `https://cors-anywhere.herokuapp.com/http://stats.nba.com/stats/videoeventsasset?gameEventID=${req.params.eventNum}&gameId=${req.params.gameId}`,
+      `https://cors-anywhere.herokuapp.com/https://stats.nba.com/stats/videoeventsasset?gameEventID=${req.params.eventNum}&gameId=${req.params.gameId}`,
       {
         headers: {
-          Referer: "http://stats.nba.com",
-          Origin: "http://stats.nba.com"
+          Referer: "https://stats.nba.com",
+          Origin: "https://stats.nba.com"
         }
       }
     )
