@@ -1,5 +1,4 @@
 .page {
-  background-color: #edeef0;
   padding: 32px;
   margin-top: 56px;
   min-width: 320px;
@@ -431,6 +430,23 @@ mat-header-cell:last-of-type {
 .box-score-container mat-header-cell:nth-of-type(7),
 .box-score-container mat-footer-cell:nth-of-type(7) {
   flex: 1 0 10px;
+}
+
+.pbp-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-width: 1400px;
+  min-height: 450px;
+}
+
+.pbp-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 450px;
 }
 
 @media (max-width: 1350px) {

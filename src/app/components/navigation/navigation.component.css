@@ -28,3 +28,7 @@
   font-weight: bold;
   background: rgba(0, 0, 0, 0.06);
 }
+
+mat-sidenav-content {
+  background-color: #edeef0;
+}

@@ -7,7 +7,35 @@
         </span>
         <mat-divider [vertical]="true" class="vertical-divider"></mat-divider>
         <div class="live-game" *ngIf="boxScore.basicGameData.isActive">
-          Live
+          <div
+            class="live-time"
+            *ngIf="boxScore.basicGameData.period.isHalftime"
+          >
+            Halftime
+          </div>
+          <div
+            class="live-time"
+            *ngIf="!boxScore.basicGameData.period.isHalftime"
+          >
+            <span *ngIf="Number(boxScore.basicGameData.period.current) <= 4">
+              <span *ngIf="boxScore.basicGameData.period.isEndOfPeriod">
+                End of Q{{ boxScore.basicGameData.period.current }}
+              </span>
+              <span *ngIf="!boxScore.basicGameData.period.isEndOfPeriod">
+                Q{{ boxScore.basicGameData.period.current }}
+                {{ boxScore.basicGameData.clock }}
+              </span>
+            </span>
+            <span *ngIf="Number(boxScore.basicGameData.period.current) > 4">
+              <span *ngIf="boxScore.basicGameData.period.isEndOfPeriod">
+                End of OT{{ boxScore.basicGameData.period.current }}
+              </span>
+              <span *ngIf="!boxScore.basicGameData.period.isEndOfPeriod">
+                OT{{ boxScore.basicGameData.period.current - 4 }}
+                {{ boxScore.basicGameData.clock }}
+              </span>
+            </span>
+          </div>
           <div class="live-icon"></div>
         </div>
         <span
@@ -399,7 +427,9 @@
 
               <ng-container matColumnDef="min">
                 <mat-header-cell *matHeaderCellDef>min</mat-header-cell>
-                <mat-cell *matCellDef="let player">{{ player.min }}</mat-cell>
+                <mat-cell *matCellDef="let player">{{
+                  player.min != "" ? player.min : "0:00"
+                }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.min.substring(
                     0,
@@ -411,7 +441,9 @@
               <ng-container matColumnDef="fg">
                 <mat-header-cell *matHeaderCellDef>fg</mat-header-cell>
                 <mat-cell *matCellDef="let player"
-                  >{{ player.fgm }}-{{ player.fga }}</mat-cell
+                  >{{ player.fgm != "" ? player.fgm : "0" }}-{{
+                    player.fga != "" ? player.fga : "0"
+                  }}</mat-cell
                 >
                 <mat-footer-cell *matFooterCellDef
                   >{{ boxScoreData[teamIndex].totals.fgm }}-{{
@@ -424,7 +456,9 @@
               <ng-container matColumnDef="ft">
                 <mat-header-cell *matHeaderCellDef>ft</mat-header-cell>
                 <mat-cell *matCellDef="let player"
-                  >{{ player.ftm }}-{{ player.fta }}</mat-cell
+                  >{{ player.ftm != "" ? player.ftm : "0" }}-{{
+                    player.fta != "" ? player.fta : "0"
+                  }}</mat-cell
                 >
                 <mat-footer-cell *matFooterCellDef
                   >{{ boxScoreData[teamIndex].totals.ftm }}-{{
@@ -437,7 +471,9 @@
               <ng-container matColumnDef="3pt">
                 <mat-header-cell *matHeaderCellDef>3pt</mat-header-cell>
                 <mat-cell *matCellDef="let player"
-                  >{{ player.tpm }}-{{ player.tpa }}</mat-cell
+                  >{{ player.tpm != "" ? player.tpm : "0" }}-{{
+                    player.tpa != "" ? player.tpa : "0"
+                  }}</mat-cell
                 >
                 <mat-footer-cell *matFooterCellDef
                   >{{ boxScoreData[teamIndex].totals.tpm }}-{{
@@ -450,7 +486,11 @@
               <ng-container matColumnDef="plusMinus">
                 <mat-header-cell *matHeaderCellDef>+/-</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.plusMinus
+                  player.plusMinus.charAt(0) != "-" && player.plusMinus != 0
+                    ? "+" + player.plusMinus
+                    : player.plusMinus != ""
+                    ? player.plusMinus
+                    : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>-</mat-footer-cell>
               </ng-container>
@@ -458,7 +498,7 @@
               <ng-container matColumnDef="oreb">
                 <mat-header-cell *matHeaderCellDef>oreb</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.offReb
+                  player.offReb != "" ? player.offReb : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.offReb
@@ -468,7 +508,7 @@
               <ng-container matColumnDef="reb">
                 <mat-header-cell *matHeaderCellDef>reb</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.totReb
+                  player.totReb != "" ? player.totReb : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.totReb
@@ -478,7 +518,7 @@
               <ng-container matColumnDef="ast">
                 <mat-header-cell *matHeaderCellDef>ast</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.assists
+                  player.assists != "" ? player.assists : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.assists
@@ -488,7 +528,7 @@
               <ng-container matColumnDef="blk">
                 <mat-header-cell *matHeaderCellDef>blk</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.blocks
+                  player.blocks != "" ? player.blocks : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.blocks
@@ -498,7 +538,7 @@
               <ng-container matColumnDef="stl">
                 <mat-header-cell *matHeaderCellDef>stl</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.steals
+                  player.steals != "" ? player.steals : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.steals
@@ -508,7 +548,7 @@
               <ng-container matColumnDef="to">
                 <mat-header-cell *matHeaderCellDef>to</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.turnovers
+                  player.turnovers != "" ? player.turnovers : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.turnovers
@@ -518,7 +558,7 @@
               <ng-container matColumnDef="pf">
                 <mat-header-cell *matHeaderCellDef>pf</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.pFouls
+                  player.pFouls != "" ? player.pFouls : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.pFouls
@@ -528,7 +568,7 @@
               <ng-container matColumnDef="pts">
                 <mat-header-cell *matHeaderCellDef>pts</mat-header-cell>
                 <mat-cell *matCellDef="let player">{{
-                  player.points
+                  player.points != "" ? player.points : "0"
                 }}</mat-cell>
                 <mat-footer-cell *matFooterCellDef>{{
                   boxScoreData[teamIndex].totals.points
@@ -568,16 +608,27 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Play-by-play">
+      <mat-tab label="Play-by-play" *ngIf="!boxScore.basicGameData.isActive">
         <!-- Lazy load play-by-play content -->
         <ng-template matTabContent>
-          <div class="pbp-container">
+          <div class="pbp-container" *ngIf="playByPlay != null">
             <plotly-plot
               [data]="playByPlay.data"
               [layout]="playByPlay.layout"
-              [style]="{ position: 'relative', width: '100%', height: '100%' }"
+              [style]="{
+                width: '1400px',
+                height: '100%'
+              }"
               [config]="{ displayModeBar: false }"
+              (plotly_click)="onMarkerClick($event)"
             ></plotly-plot>
+            <span
+              >Click on a filled circle to see a video highlight of the
+              play!</span
+            >
+          </div>
+          <div class="pbp-spinner" *ngIf="playByPlay == null">
+            <mat-spinner></mat-spinner>
           </div>
         </ng-template>
       </mat-tab>

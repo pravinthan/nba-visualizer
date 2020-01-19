@@ -13,6 +13,7 @@ export class PlayByPlay {
           awayTeamScore: number;
           homeTeamScore: number;
           isVideoAvailable: boolean;
+          didScoreChange: boolean;
         }
       ];
     }

@@ -5,8 +5,7 @@
     "ng": "ng",
     "start": "node server/server.js",
     "serve": "nodemon server/server.js & ng serve",
-    "build": "ng build --prod --stats-json",
-    "test1": "webpack-bundle-analyzer ./dist/nba-visualizer/stats.json"
+    "build": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -29,7 +28,6 @@
     "hammerjs": "^2.0.8",
     "nba.js": "^0.6.1",
     "nodemon": "^2.0.2",
-    "plotly.js": "^1.52.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "typescript": "~3.5.3",
@@ -37,12 +35,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.22",
-    "@typescript-eslint/eslint-plugin": "^2.15.0",
-    "@typescript-eslint/parser": "^2.15.0",
     "@types/hammerjs": "^2.0.36",
     "@types/node": "~8.9.4",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
     "eslint": "^6.8.0",
-    "eslint-config-google": "^0.14.0",
-    "webpack-bundle-analyzer": "^3.6.0"
+    "eslint-config-google": "^0.14.0"
   }
 }

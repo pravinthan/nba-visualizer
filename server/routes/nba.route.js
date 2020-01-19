@@ -347,7 +347,12 @@ nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
             play.score != null
               ? play.score.substring(play.score.indexOf("-") + 2)
               : null,
-          isVideoAvailable: play.isVideoAvailable
+          isVideoAvailable: play.video_available_flag == 1,
+          didScoreChange:
+            play.scoremargin != null &&
+            play.eventmsgtype != 12 &&
+            play.eventmsgtype != 13 &&
+            play.eventmsgtype != 18
         });
       });
 
@@ -359,67 +364,32 @@ nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
     });
 });
 
-/** Get past games for current season */
-nbaRoute.route("/past-games").get((req, res, next) => {
-  // Get current season year
-  nba.data
-    .calendar()
-    .then(calendar => {
-      // Get start of season year
-      return calendar.startDateCurrentSeason.substring(0, 4);
-    })
-    .then(currentSeasonYear => {
-      // Get schedule for current season year
-      return nba.data.schedule({ year: currentSeasonYear });
-    })
-    .then(schedule => {
-      // Filter the schedule to only show past games
-      var pastGames = [];
-      const gameList = schedule.league.standard;
-      gameList.forEach(game => {
-        if (game.statusNum == 3) {
-          pastGames.push(game);
+/**
+ * Get play-by-play video url
+ *
+ * @param gameId is the game's unique ID
+ * @param eventNum is the specific play's event number
+ */
+nbaRoute
+  .route("/play-by-play-video-url/:gameId/:eventNum")
+  .get((req, res, next) => {
+    fetch(
+      `http://stats.nba.com/stats/videoeventsasset?gameEventID=${req.params.eventNum}&gameId=${req.params.gameId}`,
+      {
+        headers: {
+          Referer: "http://stats.nba.com"
         }
+      }
+    )
+      .then(response => response.json())
+      .then(responseJson => {
+        return { videoURL: responseJson.resultSets.Meta.videoUrls[0].lurl };
+      })
+      .then(playByPlayVideoURL => res.json(playByPlayVideoURL))
+      .catch(err => {
+        return next(err);
       });
-
-      return pastGames;
-    })
-    .then(pastGames => res.json(pastGames))
-    .catch(err => {
-      return next(err);
-    });
-});
-
-/** Get upcoming games for current season */
-nbaRoute.route("/upcoming-games").get((req, res, next) => {
-  // Get current season year
-  nba.data
-    .calendar()
-    .then(calendar => {
-      // Get start of season year
-      return calendar.startDateCurrentSeason.substring(0, 4);
-    })
-    .then(currentSeasonYear => {
-      // Get schedule for start of season year
-      return nba.data.schedule({ year: currentSeasonYear });
-    })
-    .then(schedule => {
-      // Filter the schedule to only show remaining games
-      var upcomingGames = [];
-      const gameList = schedule.league.standard;
-      gameList.forEach(game => {
-        if (game.statusNum == 1) {
-          upcomingGames.push(game);
-        }
-      });
-
-      return upcomingGames;
-    })
-    .then(upcomingGames => res.json(upcomingGames))
-    .catch(err => {
-      return next(err);
-    });
-});
+  });
 
 /**
  * Get scheduled games for the given date

@@ -30,8 +30,7 @@ export class ScheduleComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const startDate = new Date();
-    this.initializeSchedules(startDate, 4);
+    this.initializeSchedules(new Date(), 4);
   }
 
   get isMobile() {

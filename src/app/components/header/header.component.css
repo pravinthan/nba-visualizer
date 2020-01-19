@@ -4,6 +4,10 @@
   background: linear-gradient(to right, #009fff, #ec2f4b);
 }
 
+.toolbar > mat-toolbar-row {
+  box-sizing: unset;
+}
+
 @media (max-width: 768px) and (min-width: 250px) {
   .toolbar-title {
     position: absolute;

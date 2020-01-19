@@ -1,0 +1,23 @@
+#dialog-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#dialog {
+  padding-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#video-container {
+  margin-bottom: 0.5rem;
+}
+
+#video-container > video {
+  width: 100%;
+  height: auto;
+}

@@ -1,0 +1,11 @@
+<div mat-dialog-content id="dialog-container">
+  <div *ngIf="videoHasLoaded" id="dialog">
+    <div id="video-container">
+      <video src="{{ videoURL }}" autoplay controls width="775"></video>
+    </div>
+    <span>{{ playByPlayVideoDialogData.caption }}</span>
+  </div>
+  <div *ngIf="!videoHasLoaded">
+    <mat-spinner></mat-spinner>
+  </div>
+</div>

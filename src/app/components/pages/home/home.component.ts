@@ -9,9 +9,19 @@ import { MatSnackBar } from "@angular/material";
 export class HomeComponent {
   constructor(private snackBar: MatSnackBar) {}
 
-  openSnackBar() {
+  openBoxScoreSnackBar() {
     this.snackBar.open(
-      "Go to Schedule and click on a score to access box score and play-by-play data.",
+      "Navigate to Schedule and click on a score to access box score.",
+      "OK",
+      {
+        duration: 5000
+      }
+    );
+  }
+
+  openPlayByPlaySnackBar() {
+    this.snackBar.open(
+      "Navigate to Schedule and click on a finished game's score to access play-by-play data.",
       "OK",
       {
         duration: 5000

@@ -10,13 +10,14 @@ import {
 import { BoxScore } from "./box-score.model";
 import { Article } from "./article.model";
 import { PlayByPlay } from "./play-by-play.model";
+import { PlayByPlayVideo } from "./play-by-play-video.model";
 
 @Injectable({
   providedIn: "root"
 })
 export class ApiService {
-  // endpoint = "/api";
-  endpoint = "http://localhost:4201/api";
+  endpoint = "/api";
+  // endpoint = "http://localhost:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}
@@ -89,17 +90,28 @@ export class ApiService {
       );
   }
 
-  // Get play-by-play data for a given game and date
-  getPlayByPlay(gameId: string, date: Date): Observable<any> {
-    const dateETDate = date.getDate();
-    const dateETMonth = date.getMonth() + 1;
-    const dateETYear = date.getFullYear();
-    const API_URL = `${this.endpoint}/play-by-play/${gameId}/${dateETDate}/${dateETMonth}/${dateETYear}`;
+  // Get play-by-play data for a given game
+  getPlayByPlay(gameId: string): Observable<any> {
+    const API_URL = `${this.endpoint}/play-by-play/${gameId}`;
 
     return this.http
       .get<PlayByPlay>(API_URL, { headers: this.headers })
       .pipe(
         map((res: PlayByPlay) => {
+          return res || {};
+        }),
+        catchError(this.handleError)
+      );
+  }
+
+  // Get play-by-play video url for a given game and play event number
+  getPlayByPlayVideoURL(gameId: string, eventNum: number): Observable<any> {
+    const API_URL = `${this.endpoint}/play-by-play-video-url/${gameId}/${eventNum}`;
+
+    return this.http
+      .get<PlayByPlayVideo>(API_URL, { headers: this.headers })
+      .pipe(
+        map((res: PlayByPlayVideo) => {
           return res || {};
         }),
         catchError(this.handleError)

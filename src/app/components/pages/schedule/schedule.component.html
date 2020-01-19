@@ -9,6 +9,7 @@
             [matDatepicker]="picker"
             (dateChange)="changeDate($event)"
             placeholder="Choose a date"
+            autocomplete="off"
           />
           <mat-datepicker-toggle
             matSuffix
@@ -104,14 +105,14 @@
           <mat-cell *matCellDef="let game">
             <!-- Game has finished -->
             <div
-              class="box-score"
+              class="games-link"
               *ngIf="!game.isActive && game.awayTeam.score != null"
             >
               <a
                 *ngIf="
                   Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                 "
-                [routerLink]="['/box-score', game.dateET, game.gameId]"
+                [routerLink]="['/games', game.dateET, game.gameId]"
               >
                 {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
                 {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
@@ -120,7 +121,7 @@
                 *ngIf="
                   Number(game.awayTeam.score) < Number(game.homeTeam.score)
                 "
-                [routerLink]="['/box-score', game.dateET, game.gameId]"
+                [routerLink]="['/games', game.dateET, game.gameId]"
               >
                 {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
                 {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}
@@ -129,19 +130,19 @@
 
             <!-- Game is active -->
             <div
-              class="box-score-container"
+              class="games-link-container"
               *ngIf="
                 game.isActive &&
                 game.period != null &&
                 Number(game.period.current) >= 0
               "
             >
-              <div class="box-score">
+              <div class="games-link">
                 <a
                   *ngIf="
                     Number(game.awayTeam.score) >= Number(game.homeTeam.score)
                   "
-                  [routerLink]="['/box-score', game.dateET, game.gameId]"
+                  [routerLink]="['/games', game.dateET, game.gameId]"
                 >
                   {{ game.awayTeam.abbreviation }} {{ game.awayTeam.score }} -
                   {{ game.homeTeam.score }} {{ game.homeTeam.abbreviation }}
@@ -150,7 +151,7 @@
                   *ngIf="
                     Number(game.awayTeam.score) < Number(game.homeTeam.score)
                   "
-                  [routerLink]="['/box-score', game.dateET, game.gameId]"
+                  [routerLink]="['/games', game.dateET, game.gameId]"
                 >
                   {{ game.homeTeam.abbreviation }} {{ game.homeTeam.score }} -
                   {{ game.awayTeam.score }} {{ game.awayTeam.abbreviation }}

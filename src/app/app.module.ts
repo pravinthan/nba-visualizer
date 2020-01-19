@@ -1,30 +1,26 @@
 import { BrowserModule } from "@angular/platform-browser";
-import { HttpClientModule } from "@angular/common/http";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {
   MatInputModule,
-  MatCardModule,
   MatButtonModule,
   MatToolbarModule,
-  MatExpansionModule,
   MatDividerModule,
   MatTableModule,
   MatPaginatorModule,
   MatIconModule,
   MatSidenavModule,
   MatListModule,
-  MatSelectModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatTabsModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatProgressSpinnerModule
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
-import * as PlotlyJS from "plotly.js/dist/plotly.js";
-import { PlotlyModule } from "angular-plotly.js";
+import { PlotlyViaCDNModule } from "angular-plotly.js";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -32,11 +28,12 @@ import { HomeComponent } from "./components/pages/home/home.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { ApiService } from "./shared/api.service";
 import { NavigationComponent } from "./components/navigation/navigation.component";
-import { BoxScoreComponent } from "./components/pages/box-score/box-score.component";
-import { PlayByPlayComponent } from "./components/pages/play-by-play/play-by-play.component";
+import { GamesComponent } from "./components/pages/games/games.component";
 import { ScheduleComponent } from "./components/pages/schedule/schedule.component";
+import { PlayByPlayVideoDialogComponent } from "./components/pages/games/play-by-play-video-dialog/play-by-play-video-dialog.component";
 
-PlotlyModule.plotlyjs = PlotlyJS;
+PlotlyViaCDNModule.plotlyVersion = "latest";
+PlotlyViaCDNModule.plotlyBundle = "basic";
 
 @NgModule({
   declarations: [
@@ -44,38 +41,35 @@ PlotlyModule.plotlyjs = PlotlyJS;
     HomeComponent,
     HeaderComponent,
     NavigationComponent,
-    BoxScoreComponent,
-    PlayByPlayComponent,
-    ScheduleComponent
+    ScheduleComponent,
+    GamesComponent,
+    PlayByPlayVideoDialogComponent
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     CommonModule,
-    FormsModule,
-    BrowserAnimationsModule,
     MatInputModule,
-    MatCardModule,
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
     MatSidenavModule,
     MatListModule,
-    MatExpansionModule,
-    MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
     MatSnackBarModule,
-    ReactiveFormsModule,
     MatDividerModule,
     MatTabsModule,
+    MatProgressSpinnerModule,
     MatPaginatorModule,
     LayoutModule,
-    PlotlyModule
+    PlotlyViaCDNModule
   ],
   providers: [ApiService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [PlayByPlayVideoDialogComponent]
 })
 export class AppModule {}

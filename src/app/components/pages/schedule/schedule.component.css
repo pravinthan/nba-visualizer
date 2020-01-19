@@ -1,5 +1,4 @@
 .page {
-  background-color: #edeef0;
   padding: 32px;
   margin-top: 56px;
   min-width: 320px;
@@ -36,7 +35,7 @@
 }
 
 .games-container:last-of-type {
-  margin-bottom: 0;
+  margin-bottom: 1rem;
 }
 
 .games-container mat-table {
@@ -78,22 +77,22 @@
   margin-left: 0.25rem;
 }
 
-.box-score-container {
+.games-link-container {
   display: flex;
 }
 
-.box-score-container .box-score {
+.games-link-container .games-link {
   margin-right: 0.5rem;
 }
 
-.box-score a {
+.games-link a {
   color: #304adf;
   text-decoration: none;
   font-size: smaller;
   font-weight: bold;
 }
 
-.box-score a:hover {
+.games-link a:hover {
   color: #0d1b6b;
 }
 
