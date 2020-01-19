@@ -314,15 +314,16 @@ function flattenResultSet(resultSets) {
  */
 nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
   fetch(
-    `https://proxy.nba-proxy.workers.dev/?http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
     {
       headers: {
         Referer: "http://stats.nba.com",
-        "x-cors-headers": JSON.stringify({
-          Referer: "http://stats.nba.com",
-          host: "http://stats.nba.com",
-          origin: "http://stats.nba.com"
-        })
+        "accept-encoding": "Accepflate, sdch",
+        "accept-language": "he-IL,he;q=0.8,en-US;q=0.6,en;q=0.4",
+        "cache-control": "max-age=0",
+        connection: "keep-alive",
+        "user-agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36"
       }
     }
   )
