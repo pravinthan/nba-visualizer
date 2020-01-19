@@ -314,15 +314,15 @@ function flattenResultSet(resultSets) {
  */
 nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
   fetch(
-    `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    `https://proxy.nba-proxy.workers.dev/?http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
     {
       headers: {
         Referer: "http://stats.nba.com",
-        "user-agent":
-          "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
-        Dnt: "1",
-        "Accept-Encoding": "gzip, deflate, sdch",
-        "Accept-Language": "en"
+        "x-cors-headers": JSON.stringify({
+          Referer: "http://stats.nba.com",
+          host: "http://stats.nba.com",
+          origin: "http://stats.nba.com"
+        })
       }
     }
   )
@@ -382,12 +382,7 @@ nbaRoute
       `http://stats.nba.com/stats/videoeventsasset?gameEventID=${req.params.eventNum}&gameId=${req.params.gameId}`,
       {
         headers: {
-          Referer: "http://stats.nba.com",
-          "user-agent":
-            "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36",
-          Dnt: "1",
-          "Accept-Encoding": "gzip, deflate, sdch",
-          "Accept-Language": "en"
+          Referer: "http://stats.nba.com"
         }
       }
     )
