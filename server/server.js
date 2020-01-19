@@ -1,7 +1,6 @@
 let createError = require("http-errors");
 let express = require("express");
 let path = require("path");
-var request = require("request");
 const nbaRoute = require("./routes/nba.route");
 const app = express();
 
@@ -12,11 +11,6 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api", function(req, res) {
-  //modify the url in any way you want
-  var newurl = process.env.QUOTAGUARDSTATIC_URL;
-  request(newurl).pipe(res);
-});
 app.use(express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/", express.static(path.join(__dirname, "../dist/nba-visualizer")));
 app.use("/api", nbaRoute);

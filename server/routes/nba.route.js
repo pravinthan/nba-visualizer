@@ -317,7 +317,8 @@ nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
     `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
     {
       headers: {
-        Referer: "http://stats.nba.com"
+        Referer: "http://stats.nba.com",
+        host: "nba.pravinthan.com"
       }
     }
   )
