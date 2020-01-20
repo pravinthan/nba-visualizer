@@ -245,7 +245,7 @@ export class GamesComponent implements OnInit {
         .then(boxScore => {
           if (!boxScore.basicGameData.isActive) {
             // Get play-by-play data
-            this.getPlayByPlay(params.gameId).then(playByPlay => {
+            this.getPlayByPlayStats(params.gameId).then(playByPlay => {
               var numberOfScoreChangingPlays = 0;
               playByPlay.periods.forEach(playByPlayPeriod => {
                 playByPlayPeriod.plays.forEach(play => {
@@ -431,8 +431,12 @@ export class GamesComponent implements OnInit {
     return this.api.getRecapArticle(gameId, date).toPromise();
   }
 
-  getPlayByPlay(gameId: string): Promise<PlayByPlay> {
-    return this.api.getPlayByPlay(gameId).toPromise();
+  getPlayByPlayStats(gameId: string): Promise<PlayByPlay> {
+    return this.api.getPlayByPlayStats(gameId).toPromise();
+  }
+
+  getPlayByPlayData(gameId: string, date: Date): Promise<PlayByPlay> {
+    return this.api.getPlayByPlayData(gameId, date).toPromise();
   }
 
   getPlayByPlayVideoURL(

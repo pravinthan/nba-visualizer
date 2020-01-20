@@ -1,6 +1,9 @@
 const express = require("express");
 const nba = require("nba.js").default;
 const nbaRoute = express.Router();
+const request = require("request");
+const requestPromise = require("request-promise-native");
+const cheerio = require("cheerio");
 require("cross-fetch/polyfill");
 
 const teams = {
@@ -307,22 +310,60 @@ function flattenResultSet(resultSets) {
   });
 }
 
+function proxyGenerator() {
+  let ip_addresses = [];
+  let port_numbers = [];
+
+  request("https://sslproxies.org/", function(error, response, html) {
+    if (!error && response.statusCode == 200) {
+      const $ = cheerio.load(html);
+
+      $("td:nth-child(1)").each(function(index, value) {
+        ip_addresses[index] = $(this).text();
+      });
+
+      $("td:nth-child(2)").each(function(index, value) {
+        port_numbers[index] = $(this).text();
+      });
+    } else {
+      console.log("Error loading proxy, please try again");
+    }
+
+    ip_addresses.join(", ");
+    port_numbers.join(", ");
+
+    // console.log("IP Addresses:", ip_addresses);
+    // console.log("Port Numbers:", port_numbers);
+  });
+}
+
 /**
  * Get play-by-play data for a given game
  *
  * @param gameId is the game's unique ID
  */
 nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
-  fetch(
-    `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
-    {
-      headers: {
-        Referer: "http://stats.nba.com",
-        host: "nba.pravinthan.com"
-      }
+  const options = {
+    url: `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    method: "GET",
+    proxy: proxyGenerator(),
+    headers: {
+      Referer: "http://stats.nba.com"
     }
-  )
-    .then(response => response.json())
+  };
+
+  // console.log(options.proxy);
+  requestPromise(options)
+    // fetch(
+    //   `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
+    //   {
+    //     headers: {
+    //       Referer: "http://stats.nba.com"
+    //     }
+    //   }
+    // )
+    //   .then(response => response.json())
+    .then(response => JSON.parse(response))
     .then(responseJson => flattenResultSet(responseJson.resultSets))
     .then(playByPlay => {
       let newPlayByPlay = { periods: [] };
@@ -364,6 +405,68 @@ nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
       return next(err);
     });
 });
+
+nbaRoute
+  .route("/play-by-play/:gameId/:date/:month/:year")
+  .get((req, res, next) => {
+    // Prepend a "0" to the month/date if it is given without it
+    if (req.params.month.length != 2) {
+      req.params.month = "0" + req.params.month;
+    }
+    if (req.params.date.length != 2) {
+      req.params.date = "0" + req.params.date;
+    }
+
+    nba.data
+      .miniBoxscore({
+        gameId: req.params.gameId,
+        date: req.params.year + req.params.month + req.params.date
+      })
+      .then(async miniBoxscore => {
+        let playByPlays = {
+          periods: []
+        };
+
+        const currentPeriod = miniBoxscore.basicGameData.period.current;
+        const awayTeamId = miniBoxscore.basicGameData.vTeam.teamId;
+        const homeTeamId = miniBoxscore.basicGameData.vTeam.teamId;
+        for (let periodIndex = 0; periodIndex < currentPeriod; periodIndex++) {
+          let playByPlay = await nba.data.pbp({
+            date: req.params.year + req.params.month + req.params.date,
+            gameId: req.params.gameId,
+            period: periodIndex + 1
+          });
+
+          playByPlay.plays.forEach((play, playIndex) => {
+            playByPlay.plays[playIndex] = {
+              clock: play.clock,
+              eventNum: -1,
+              eventMsgType: play.eventMsgType,
+              eventMsgActionType: -1,
+              awayDescription:
+                play.teamId == awayTeamId ? play.formatted.description : null,
+              neutralDescription: null,
+              homeDescription:
+                play.teamId == homeTeamId ? play.formatted.description : null,
+              awayTeamScore: play.vTeamScore,
+              homeTeamScore: play.hTeamScore,
+              isVideoAvailable: false,
+              isScoreChange: play.isScoreChange
+            };
+          });
+
+          playByPlays.periods.push({
+            plays: playByPlay.plays
+          });
+        }
+
+        return playByPlays;
+      })
+      .then(playByPlay => res.json(playByPlay))
+      .catch(err => {
+        return next(err);
+      });
+  });
 
 /**
  * Get play-by-play video url
