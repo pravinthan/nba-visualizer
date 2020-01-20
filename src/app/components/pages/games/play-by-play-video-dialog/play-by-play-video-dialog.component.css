@@ -21,3 +21,8 @@
   width: 100%;
   height: auto;
 }
+
+#fallback-message {
+  display: block;
+  text-align: center;
+}
