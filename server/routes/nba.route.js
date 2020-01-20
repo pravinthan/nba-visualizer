@@ -1,9 +1,6 @@
 const express = require("express");
 const nba = require("nba.js").default;
 const nbaRoute = express.Router();
-const request = require("request");
-const requestPromise = require("request-promise-native");
-const cheerio = require("cheerio");
 require("cross-fetch/polyfill");
 
 const teams = {
@@ -310,95 +307,57 @@ function flattenResultSet(resultSets) {
   });
 }
 
-function proxyGenerator() {
-  let ip_addresses = [];
-  let port_numbers = [];
-
-  request("https://sslproxies.org/", function(error, response, html) {
-    if (!error && response.statusCode == 200) {
-      const $ = cheerio.load(html);
-
-      $("td:nth-child(1)").each(function(index, value) {
-        ip_addresses[index] = $(this).text();
-      });
-
-      $("td:nth-child(2)").each(function(index, value) {
-        port_numbers[index] = $(this).text();
-      });
-    } else {
-      console.log("Error loading proxy, please try again");
-    }
-
-    ip_addresses.join(", ");
-    port_numbers.join(", ");
-
-    // console.log("IP Addresses:", ip_addresses);
-    // console.log("Port Numbers:", port_numbers);
-  });
-}
-
 /**
  * Get play-by-play data for a given game
  *
  * @param gameId is the game's unique ID
  */
-nbaRoute.route("/play-by-play/:gameId").get((req, res, next) => {
-  const options = {
-    url: `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
-    method: "GET",
-    proxy: proxyGenerator(),
-    headers: {
-      Referer: "http://stats.nba.com"
-    }
-  };
+nbaRoute.route("/play-by-play/:gameId/:date/:month/:year").get((req, res, next) => {
+  // If month requested is before August, then user is requesting season (year - 1)
+  var seasonYear = req.params.year;
+  if (parseInt(req.params.month) <= 8) {
+    seasonYear = (parseInt(seasonYear) - 1).toString();
+  }
 
-  // console.log(options.proxy);
-  requestPromise(options)
-    // fetch(
-    //   `http://stats.nba.com/stats/playbyplayv2?gameId=${req.params.gameId}&startPeriod=0&endPeriod=14`,
-    //   {
-    //     headers: {
-    //       Referer: "http://stats.nba.com"
-    //     }
-    //   }
-    // )
-    //   .then(response => response.json())
-    .then(response => JSON.parse(response))
-    .then(responseJson => flattenResultSet(responseJson.resultSets))
+  fetch(
+    `https://nlnbamdnyc-a.akamaihd.net/fs/nba/feeds_s2012/stats/${seasonYear}/pbp/${req.params.gameId}.json`
+  )
+    .then(response => response.json())
+    // .then(responseJson => flattenResultSet(responseJson.resultSets))
     .then(playByPlay => {
-      let newPlayByPlay = { periods: [] };
-      playByPlay.PlayByPlay.forEach(play => {
-        const playPeriod = play.period - 1;
-        if (newPlayByPlay.periods[playPeriod] == null) {
-          newPlayByPlay.periods[playPeriod] = { plays: [] };
-        }
+      // let newPlayByPlay = { periods: [] };
+      // playByPlay.quarters.forEach(play => {
+      //   const playPeriod = play.period - 1;
+      //   if (newPlayByPlay.periods[playPeriod] == null) {
+      //     newPlayByPlay.periods[playPeriod] = { plays: [] };
+      //   }
 
-        newPlayByPlay.periods[playPeriod].plays.push({
-          clock: play.pctimestring,
-          eventNum: play.eventnum,
-          eventMsgType: play.eventmsgtype,
-          eventMsgActionType: play.eventmsgactiontype,
-          awayDescription: play.visitordescription,
-          neutralDescription: play.neutraldescription,
-          homeDescription: play.homedescription,
-          awayTeamScore:
-            play.score != null
-              ? play.score.substring(0, play.score.indexOf("-") - 1)
-              : null,
-          homeTeamScore:
-            play.score != null
-              ? play.score.substring(play.score.indexOf("-") + 2)
-              : null,
-          isVideoAvailable: play.video_available_flag == 1,
-          didScoreChange:
-            play.scoremargin != null &&
-            play.eventmsgtype != 12 &&
-            play.eventmsgtype != 13 &&
-            play.eventmsgtype != 18
-        });
-      });
+      //   newPlayByPlay.periods[playPeriod].plays.push({
+      //     clock: play.pctimestring,
+      //     eventNum: play.eventnum,
+      //     eventMsgType: play.eventmsgtype,
+      //     eventMsgActionType: play.eventmsgactiontype,
+      //     awayDescription: play.visitordescription,
+      //     neutralDescription: play.neutraldescription,
+      //     homeDescription: play.homedescription,
+      //     awayTeamScore:
+      //       play.score != null
+      //         ? play.score.substring(0, play.score.indexOf("-") - 1)
+      //         : null,
+      //     homeTeamScore:
+      //       play.score != null
+      //         ? play.score.substring(play.score.indexOf("-") + 2)
+      //         : null,
+      //     isVideoAvailable: play.video_available_flag == 1,
+      //     didScoreChange:
+      //       play.scoremargin != null &&
+      //       play.eventmsgtype != 12 &&
+      //       play.eventmsgtype != 13 &&
+      //       play.eventmsgtype != 18
+      //   });
+      // });
 
-      return newPlayByPlay;
+      return playByPlay;
     })
     .then(playByPlay => res.json(playByPlay))
     .catch(err => {
