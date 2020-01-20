@@ -5,14 +5,12 @@ export class PlayByPlay {
         {
           clock: string;
           eventNum: number;
-          eventMsgType: number;
-          eventMsgActionType: number;
-          awayDescription: string;
-          neutralDescription: string;
-          homeDescription: string;
+          description: string;
+          relevantTeamAbbreviation: string;
           awayTeamScore: number;
           homeTeamScore: number;
           isVideoAvailable: boolean;
+          videoServer: number;
           didScoreChange: boolean;
         }
       ];

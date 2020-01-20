@@ -16,8 +16,8 @@ import { PlayByPlayVideo } from "./play-by-play-video.model";
   providedIn: "root"
 })
 export class ApiService {
-  endpoint = "/api";
-  // endpoint = "http://localhost:4201/api";
+  // endpoint = "/api";
+  endpoint = "http://localhost:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}
@@ -91,8 +91,8 @@ export class ApiService {
   }
 
   // Get play-by-play data for a given game
-  getPlayByPlayStats(gameId: string): Observable<any> {
-    const API_URL = `${this.endpoint}/play-by-play/${gameId}`;
+  getPlayByPlayStats(gameId: string, seasonYear: string): Observable<any> {
+    const API_URL = `${this.endpoint}/play-by-play/${gameId}/${seasonYear}`;
 
     return this.http
       .get<PlayByPlay>(API_URL, { headers: this.headers })
@@ -122,8 +122,12 @@ export class ApiService {
   }
 
   // Get play-by-play video url for a given game and play event number
-  getPlayByPlayVideoURL(gameId: string, eventNum: number): Observable<any> {
-    const API_URL = `${this.endpoint}/play-by-play-video-url/${gameId}/${eventNum}`;
+  getPlayByPlayVideoURL(
+    gameId: string,
+    relevantTeamAbbreviation: string,
+    eventNum: number
+  ): Observable<any> {
+    const API_URL = `${this.endpoint}/play-by-play-video-url/${gameId}/${relevantTeamAbbreviation}/${eventNum}`;
 
     return this.http
       .get<PlayByPlayVideo>(API_URL, { headers: this.headers })

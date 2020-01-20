@@ -280,84 +280,38 @@ nbaRoute
   });
 
 /**
- * Flatten a result set by mapping each of it's rows' indices to
- * the respective header item.
- *
- * @param {Object[]} resultSets - Result set(s) to be flattened
- * @return {Promise}
- */
-function flattenResultSet(resultSets) {
-  return new Promise((resolve, reject) => {
-    var flattened = {};
-
-    resultSets.forEach((result, i) => {
-      flattened[result.name] = result.rowSet.map((row, j) => {
-        var mappedRow = {};
-
-        row.forEach((value, k) => {
-          var key = result.headers[k].toLowerCase();
-          mappedRow[key] = value;
-        });
-
-        return mappedRow;
-      });
-    });
-
-    return resolve(flattened);
-  });
-}
-
-/**
  * Get play-by-play data for a given game
  *
  * @param gameId is the game's unique ID
  */
-nbaRoute.route("/play-by-play/:gameId/:date/:month/:year").get((req, res, next) => {
-  // If month requested is before August, then user is requesting season (year - 1)
-  var seasonYear = req.params.year;
-  if (parseInt(req.params.month) <= 8) {
-    seasonYear = (parseInt(seasonYear) - 1).toString();
-  }
-
+nbaRoute.route("/play-by-play/:gameId/:seasonYear").get((req, res, next) => {
   fetch(
-    `https://nlnbamdnyc-a.akamaihd.net/fs/nba/feeds_s2012/stats/${seasonYear}/pbp/${req.params.gameId}.json`
+    `https://nlnbamdnyc-a.akamaihd.net/fs/nba/feeds_s2012/stats/${req.params.seasonYear}/pbp/${req.params.gameId}.json`
   )
     .then(response => response.json())
-    // .then(responseJson => flattenResultSet(responseJson.resultSets))
     .then(playByPlay => {
-      // let newPlayByPlay = { periods: [] };
-      // playByPlay.quarters.forEach(play => {
-      //   const playPeriod = play.period - 1;
-      //   if (newPlayByPlay.periods[playPeriod] == null) {
-      //     newPlayByPlay.periods[playPeriod] = { plays: [] };
-      //   }
+      let newPlayByPlay = { periods: [] };
+      playByPlay.quarters.forEach((period, periodIndex) => {
+        if (newPlayByPlay.periods[periodIndex] == null) {
+          newPlayByPlay.periods[periodIndex] = { plays: [] };
+        }
 
-      //   newPlayByPlay.periods[playPeriod].plays.push({
-      //     clock: play.pctimestring,
-      //     eventNum: play.eventnum,
-      //     eventMsgType: play.eventmsgtype,
-      //     eventMsgActionType: play.eventmsgactiontype,
-      //     awayDescription: play.visitordescription,
-      //     neutralDescription: play.neutraldescription,
-      //     homeDescription: play.homedescription,
-      //     awayTeamScore:
-      //       play.score != null
-      //         ? play.score.substring(0, play.score.indexOf("-") - 1)
-      //         : null,
-      //     homeTeamScore:
-      //       play.score != null
-      //         ? play.score.substring(play.score.indexOf("-") + 2)
-      //         : null,
-      //     isVideoAvailable: play.video_available_flag == 1,
-      //     didScoreChange:
-      //       play.scoremargin != null &&
-      //       play.eventmsgtype != 12 &&
-      //       play.eventmsgtype != 13 &&
-      //       play.eventmsgtype != 18
-      //   });
-      // });
+        period.plays.forEach(play => {
+          newPlayByPlay.periods[periodIndex].plays.push({
+            clock: play.c,
+            eventNum: play.id,
+            description: play.d,
+            relevantTeamAbbreviation: play.t,
+            awayTeamScore: play.vs,
+            homeTeamScore: play.hs,
+            isVideoAvailable: play.v != null,
+            videoServer: play.vs,
+            didScoreChange: play.p > 0
+          });
+        });
+      });
 
-      return playByPlay;
+      return newPlayByPlay;
     })
     .then(playByPlay => res.json(playByPlay))
     .catch(err => {
@@ -431,22 +385,18 @@ nbaRoute
  * Get play-by-play video url
  *
  * @param gameId is the game's unique ID
+ * @param relevantTeamAbbreviation is the abbreviation of the team who caused the play
  * @param eventNum is the specific play's event number
  */
 nbaRoute
-  .route("/play-by-play-video-url/:gameId/:eventNum")
+  .route("/play-by-play-video-url/:gameId/:relevantTeamAbbreviation/:eventNum")
   .get((req, res, next) => {
     fetch(
-      `http://stats.nba.com/stats/videoeventsasset?gameEventID=${req.params.eventNum}&gameId=${req.params.gameId}`,
-      {
-        headers: {
-          Referer: "http://stats.nba.com"
-        }
-      }
+      `https://watch.nba.com/service/publishpoint?type=game&extid=${req.params.gameId}&gt=128&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`
     )
       .then(response => response.json())
       .then(responseJson => {
-        return { videoURL: responseJson.resultSets.Meta.videoUrls[0].lurl };
+        return { videoURL: responseJson.path };
       })
       .then(playByPlayVideoURL => res.json(playByPlayVideoURL))
       .catch(err => {

@@ -3,7 +3,7 @@ import { Inject, Component, OnInit } from "@angular/core";
 import { PlayByPlayVideo } from "src/app/shared/play-by-play-video.model";
 
 interface PlayByPlayVideoDialogData {
-  videoURL: Promise<PlayByPlayVideo>;
+  video: Promise<PlayByPlayVideo>;
   caption: string;
 }
 
@@ -22,7 +22,7 @@ export class PlayByPlayVideoDialogComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.playByPlayVideoDialogData.videoURL.then(
+    this.playByPlayVideoDialogData.video.then(
       (playByPlayVideo: PlayByPlayVideo) => {
         this.videoURL = playByPlayVideo.videoURL;
         this.videoHasLoaded = true;

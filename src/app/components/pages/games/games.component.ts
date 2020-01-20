@@ -245,7 +245,10 @@ export class GamesComponent implements OnInit {
         .then(boxScore => {
           if (!boxScore.basicGameData.isActive) {
             // Get play-by-play data
-            this.getPlayByPlayStats(params.gameId).then(playByPlay => {
+            this.getPlayByPlayStats(
+              params.gameId,
+              boxScore.basicGameData.seasonYear
+            ).then(playByPlay => {
               var numberOfScoreChangingPlays = 0;
               playByPlay.periods.forEach(playByPlayPeriod => {
                 playByPlayPeriod.plays.forEach(play => {
@@ -266,19 +269,15 @@ export class GamesComponent implements OnInit {
               var colourIndex = 0;
               playByPlay.periods.forEach((playByPlayPeriod, periodIndex) => {
                 var coordinates = { x: [], y: [] };
-                var playMarkerSymbols = [];
+                var playMarkerSymbols: string[] = [];
                 var scoreChangingPlays = [];
-                var hoverTexts = [];
+                var hoverTexts: string[] = [];
                 playByPlayPeriod.plays.forEach(play => {
                   if (play.didScoreChange) {
                     scoreChangingPlays.push(play);
 
                     // Will need a full date in order to display it on plotly as a time
-                    coordinates.x.push(
-                      "1970-01-01 00:" +
-                        (play.clock.length == 4 ? "0" : "") +
-                        play.clock
-                    );
+                    coordinates.x.push("1970-01-01 00:" + play.clock);
                     coordinates.y.push(play.homeTeamScore - play.awayTeamScore);
 
                     play.isVideoAvailable
@@ -288,8 +287,7 @@ export class GamesComponent implements OnInit {
                     hoverTexts.push(
                       `${play.awayTeamScore - play.homeTeamScore}` +
                         `<br><b>Score</b>: ${play.awayTeamScore} - ${play.homeTeamScore}` +
-                        `<br><b>Description</b>: ${play.awayDescription ||
-                          play.homeDescription}`
+                        `<br><b>Description</b>: ${play.description}`
                     );
                   }
                 });
@@ -431,8 +429,8 @@ export class GamesComponent implements OnInit {
     return this.api.getRecapArticle(gameId, date).toPromise();
   }
 
-  getPlayByPlayStats(gameId: string): Promise<PlayByPlay> {
-    return this.api.getPlayByPlayStats(gameId).toPromise();
+  getPlayByPlayStats(gameId: string, seasonYear: string): Promise<PlayByPlay> {
+    return this.api.getPlayByPlayStats(gameId, seasonYear).toPromise();
   }
 
   getPlayByPlayData(gameId: string, date: Date): Promise<PlayByPlay> {
@@ -441,9 +439,12 @@ export class GamesComponent implements OnInit {
 
   getPlayByPlayVideoURL(
     gameId: string,
+    relevantTeamAbbreviation: string,
     eventNum: number
   ): Promise<PlayByPlayVideo> {
-    return this.api.getPlayByPlayVideoURL(gameId, eventNum).toPromise();
+    return this.api
+      .getPlayByPlayVideoURL(gameId, relevantTeamAbbreviation, eventNum)
+      .toPromise();
   }
 
   // If video is available, open up a dialog
@@ -454,11 +455,12 @@ export class GamesComponent implements OnInit {
         width: "900px",
         height: "min-content",
         data: {
-          videoURL: this.getPlayByPlayVideoURL(
+          video: this.getPlayByPlayVideoURL(
             this.boxScore.basicGameData.gameId,
+            play.relevantTeamAbbreviation,
             play.eventNum
           ),
-          caption: play.awayDescription || play.homeDescription
+          caption: play.description
         }
       });
     }
