@@ -319,68 +319,6 @@ nbaRoute.route("/play-by-play/:gameId/:seasonYear").get((req, res, next) => {
     });
 });
 
-nbaRoute
-  .route("/play-by-play/:gameId/:date/:month/:year")
-  .get((req, res, next) => {
-    // Prepend a "0" to the month/date if it is given without it
-    if (req.params.month.length != 2) {
-      req.params.month = "0" + req.params.month;
-    }
-    if (req.params.date.length != 2) {
-      req.params.date = "0" + req.params.date;
-    }
-
-    nba.data
-      .miniBoxscore({
-        gameId: req.params.gameId,
-        date: req.params.year + req.params.month + req.params.date
-      })
-      .then(async miniBoxscore => {
-        let playByPlays = {
-          periods: []
-        };
-
-        const currentPeriod = miniBoxscore.basicGameData.period.current;
-        const awayTeamId = miniBoxscore.basicGameData.vTeam.teamId;
-        const homeTeamId = miniBoxscore.basicGameData.vTeam.teamId;
-        for (let periodIndex = 0; periodIndex < currentPeriod; periodIndex++) {
-          let playByPlay = await nba.data.pbp({
-            date: req.params.year + req.params.month + req.params.date,
-            gameId: req.params.gameId,
-            period: periodIndex + 1
-          });
-
-          playByPlay.plays.forEach((play, playIndex) => {
-            playByPlay.plays[playIndex] = {
-              clock: play.clock,
-              eventNum: -1,
-              eventMsgType: play.eventMsgType,
-              eventMsgActionType: -1,
-              awayDescription:
-                play.teamId == awayTeamId ? play.formatted.description : null,
-              neutralDescription: null,
-              homeDescription:
-                play.teamId == homeTeamId ? play.formatted.description : null,
-              awayTeamScore: play.vTeamScore,
-              homeTeamScore: play.hTeamScore,
-              isVideoAvailable: false,
-              isScoreChange: play.isScoreChange
-            };
-          });
-
-          playByPlays.periods.push({
-            plays: playByPlay.plays
-          });
-        }
-
-        return playByPlays;
-      })
-      .then(playByPlay => res.json(playByPlay))
-      .catch(err => {
-        return next(err);
-      });
-  });
-
 /**
  * Get play-by-play video url
  *

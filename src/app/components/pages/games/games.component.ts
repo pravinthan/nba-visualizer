@@ -245,7 +245,7 @@ export class GamesComponent implements OnInit {
         .then(boxScore => {
           if (!boxScore.basicGameData.isActive) {
             // Get play-by-play data
-            this.getPlayByPlayStats(
+            this.getPlayByPlay(
               params.gameId,
               boxScore.basicGameData.seasonYear
             ).then(playByPlay => {
@@ -429,12 +429,8 @@ export class GamesComponent implements OnInit {
     return this.api.getRecapArticle(gameId, date).toPromise();
   }
 
-  getPlayByPlayStats(gameId: string, seasonYear: string): Promise<PlayByPlay> {
-    return this.api.getPlayByPlayStats(gameId, seasonYear).toPromise();
-  }
-
-  getPlayByPlayData(gameId: string, date: Date): Promise<PlayByPlay> {
-    return this.api.getPlayByPlayData(gameId, date).toPromise();
+  getPlayByPlay(gameId: string, seasonYear: string): Promise<PlayByPlay> {
+    return this.api.getPlayByPlay(gameId, seasonYear).toPromise();
   }
 
   getPlayByPlayVideoURL(
