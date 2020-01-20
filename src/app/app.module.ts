@@ -31,6 +31,8 @@ import { NavigationComponent } from "./components/navigation/navigation.componen
 import { GamesComponent } from "./components/pages/games/games.component";
 import { ScheduleComponent } from "./components/pages/schedule/schedule.component";
 import { PlayByPlayVideoDialogComponent } from "./components/pages/games/play-by-play-video-dialog/play-by-play-video-dialog.component";
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 PlotlyViaCDNModule.plotlyVersion = "latest";
 PlotlyViaCDNModule.plotlyBundle = "basic";
@@ -66,7 +68,8 @@ PlotlyViaCDNModule.plotlyBundle = "basic";
     MatProgressSpinnerModule,
     MatPaginatorModule,
     LayoutModule,
-    PlotlyViaCDNModule
+    PlotlyViaCDNModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [ApiService],
   bootstrap: [AppComponent],

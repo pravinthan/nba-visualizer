@@ -1,0 +1,21 @@
+{
+  "name": "NBA Visualizer",
+  "short_name": "NBA",
+  "theme_color": "#ec2f4b",
+  "background_color": "#009fff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/#/schedule/",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
