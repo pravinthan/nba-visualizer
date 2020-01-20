@@ -392,7 +392,12 @@ nbaRoute
   .route("/play-by-play-video-url/:gameId/:relevantTeamAbbreviation/:eventNum")
   .get((req, res, next) => {
     fetch(
-      `https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`
+      `https://cors-anywhere.herokuapp.com/https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`,
+      {
+        headers: {
+          Origin: "https://watch.nba.com"
+        }
+      }
     )
       .then(response => response.json())
       .then(responseJson => {
