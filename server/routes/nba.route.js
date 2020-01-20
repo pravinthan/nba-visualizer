@@ -391,28 +391,18 @@ nbaRoute
 nbaRoute
   .route("/play-by-play-video-url/:gameId/:relevantTeamAbbreviation/:eventNum")
   .get((req, res, next) => {
-    fetch(
-      `https://cors-anywhere.herokuapp.com/https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`,
-      {
-        headers: {
-          Origin: "https://watch.nba.com",
-          Accept: "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
-          "Accept-Language": "en-US,en;q=0.9",
-          Connection: "keep-alive",
-          Referer: "https://watch.nba.com/nba/videoplayer.jsp",
-          "User-Agent":
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
-        }
-      }
-    )
+    const URL = `https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`;
+    fetch(URL)
       .then(response => response.json())
       .then(responseJson => {
-        return { videoURL: responseJson.path };
+        return { videoURL: responseJson.path, fallbackURL: null };
       })
       .then(playByPlayVideoURL => res.json(playByPlayVideoURL))
       .catch(err => {
-        return next(err);
+        res.json({
+          videoURL: null,
+          fallbackURL: URL
+        });
       });
   });
 

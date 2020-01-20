@@ -12,8 +12,10 @@ interface PlayByPlayVideoDialogData {
   styleUrls: ["play-by-play-video-dialog.component.css"]
 })
 export class PlayByPlayVideoDialogComponent implements OnInit {
+  videoFailedToLoad = false;
   videoHasLoaded = false;
   videoURL: string;
+  fallbackURL: string;
 
   constructor(
     public dialogRef: MatDialogRef<PlayByPlayVideoDialogComponent>,
@@ -25,7 +27,9 @@ export class PlayByPlayVideoDialogComponent implements OnInit {
     this.playByPlayVideoDialogData.video.then(
       (playByPlayVideo: PlayByPlayVideo) => {
         this.videoURL = playByPlayVideo.videoURL;
-        this.videoHasLoaded = true;
+        this.fallbackURL = playByPlayVideo.fallbackURL;
+        this.videoHasLoaded = playByPlayVideo.videoURL != null;
+        this.videoFailedToLoad = playByPlayVideo.fallbackURL != null;
       }
     );
   }

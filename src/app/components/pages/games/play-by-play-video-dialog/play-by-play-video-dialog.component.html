@@ -6,6 +6,12 @@
     <span>{{ playByPlayVideoDialogData.caption }}</span>
   </div>
   <div *ngIf="!videoHasLoaded">
-    <mat-spinner></mat-spinner>
+    <span *ngIf="videoFailedToLoad">
+      NBA is currently blocking access to its play-by-play video highlight API.
+      You can find the link to this play
+      <a target="_blank" href="{{ fallbackURL }}">here</a>. You can also view
+      this video if you build and serve this project yourself.
+    </span>
+    <mat-spinner *ngIf="!videoFailedToLoad"></mat-spinner>
   </div>
 </div>
