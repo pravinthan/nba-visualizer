@@ -401,7 +401,7 @@ nbaRoute
       .catch(err => {
         res.json({
           videoURL: null,
-          fallbackURL: URL
+          fallbackURL: URL.substring(0, URL.indexOf("&format=json"))
         });
       });
   });
