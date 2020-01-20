@@ -53,4 +53,4 @@ Can be accessed by navigating to the play-by-play tab and clicking on a filled c
 
 ## License
 
-[MIT](./LICENSE) © [Pravinthan Prabagaran](https://pravinthan.com).
+[MIT](./LICENSE) &copy; [Pravinthan Prabagaran](https://pravinthan.com).
