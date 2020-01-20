@@ -388,7 +388,7 @@ export class GamesComponent implements OnInit {
                 this.playByPlay.layout[
                   "xaxis" + (periodIndex != 0 ? periodIndex + 1 : "")
                 ] = {
-                  fixedrange: true,
+                  fixedrange: false,
                   showgrid: false,
                   type: "date",
                   tickformat: "%M:%S",
