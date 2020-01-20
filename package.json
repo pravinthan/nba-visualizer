@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^8.2.14",
     "@angular/platform-browser-dynamic": "^8.2.14",
     "@angular/router": "^8.2.14",
+    "@types/node": "~8.9.4",
     "angular-plotly.js": "^1.5.0",
     "cross-fetch": "^3.0.4",
     "express": "^4.17.1",
@@ -36,7 +37,6 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.803.22",
     "@types/hammerjs": "^2.0.36",
-    "@types/node": "~8.9.4",
     "@typescript-eslint/eslint-plugin": "^2.15.0",
     "@typescript-eslint/parser": "^2.15.0",
     "eslint": "^6.8.0",
