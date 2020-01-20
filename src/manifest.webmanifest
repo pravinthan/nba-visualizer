@@ -5,7 +5,7 @@
   "background_color": "#009fff",
   "display": "standalone",
   "scope": "/",
-  "start_url": "/#/schedule/",
+  "start_url": "/",
   "icons": [
     {
       "src": "/assets/icons/icon-192x192.png",
