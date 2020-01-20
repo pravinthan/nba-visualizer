@@ -395,7 +395,14 @@ nbaRoute
       `https://cors-anywhere.herokuapp.com/https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`,
       {
         headers: {
-          Origin: "https://watch.nba.com"
+          Origin: "https://watch.nba.com",
+          Accept: "*/*",
+          "Accept-Encoding": "gzip, deflate, br",
+          "Accept-Language": "en-US,en;q=0.9",
+          Connection: "keep-alive",
+          Referer: "https://watch.nba.com/nba/videoplayer.jsp",
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36"
         }
       }
     )
