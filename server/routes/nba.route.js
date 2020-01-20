@@ -392,7 +392,7 @@ nbaRoute
   .route("/play-by-play-video-url/:gameId/:relevantTeamAbbreviation/:eventNum")
   .get((req, res, next) => {
     fetch(
-      `https://watch.nba.com/service/publishpoint?type=game&extid=${req.params.gameId}&gt=128&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`
+      `https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`
     )
       .then(response => response.json())
       .then(responseJson => {
