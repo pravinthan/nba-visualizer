@@ -243,173 +243,171 @@ export class GamesComponent implements OnInit {
           return boxScore;
         })
         .then(boxScore => {
-          if (!boxScore.basicGameData.isActive) {
-            // Get play-by-play data
-            this.getPlayByPlay(
-              params.gameId,
-              boxScore.basicGameData.seasonYear
-            ).then(playByPlay => {
-              var numberOfScoreChangingPlays = 0;
-              playByPlay.periods.forEach(playByPlayPeriod => {
-                playByPlayPeriod.plays.forEach(play => {
-                  if (play.didScoreChange) {
-                    numberOfScoreChangingPlays++;
-                  }
-                });
+          // Get play-by-play data
+          this.getPlayByPlay(
+            params.gameId,
+            boxScore.basicGameData.seasonYear
+          ).then(playByPlay => {
+            var numberOfScoreChangingPlays = 0;
+            playByPlay.periods.forEach(playByPlayPeriod => {
+              playByPlayPeriod.plays.forEach(play => {
+                if (play.didScoreChange) {
+                  numberOfScoreChangingPlays++;
+                }
+              });
+            });
+
+            var colours: string[] = [];
+            colours = interpolateColors(
+              "rgb(0,159,255)",
+              "rgb(236,47,75)",
+              numberOfScoreChangingPlays
+            );
+
+            var periods = [];
+            var colourIndex = 0;
+            playByPlay.periods.forEach((playByPlayPeriod, periodIndex) => {
+              var coordinates = { x: [], y: [] };
+              var playMarkerSymbols: string[] = [];
+              var scoreChangingPlays = [];
+              var hoverTexts: string[] = [];
+              playByPlayPeriod.plays.forEach(play => {
+                if (play.didScoreChange) {
+                  scoreChangingPlays.push(play);
+
+                  // Will need a full date in order to display it on plotly as a time
+                  coordinates.x.push("1970-01-01 00:" + play.clock);
+                  coordinates.y.push(play.homeTeamScore - play.awayTeamScore);
+
+                  play.isVideoAvailable
+                    ? playMarkerSymbols.push("circle")
+                    : playMarkerSymbols.push("circle-open");
+
+                  hoverTexts.push(
+                    `${play.awayTeamScore - play.homeTeamScore}` +
+                      `<br><b>Score</b>: ${play.awayTeamScore} - ${play.homeTeamScore}` +
+                      `<br><b>Description</b>: ${play.description}`
+                  );
+                }
               });
 
-              var colours: string[] = [];
-              colours = interpolateColors(
-                "rgb(0,159,255)",
-                "rgb(236,47,75)",
-                numberOfScoreChangingPlays
-              );
-
-              var periods = [];
-              var colourIndex = 0;
-              playByPlay.periods.forEach((playByPlayPeriod, periodIndex) => {
-                var coordinates = { x: [], y: [] };
-                var playMarkerSymbols: string[] = [];
-                var scoreChangingPlays = [];
-                var hoverTexts: string[] = [];
-                playByPlayPeriod.plays.forEach(play => {
-                  if (play.didScoreChange) {
-                    scoreChangingPlays.push(play);
-
-                    // Will need a full date in order to display it on plotly as a time
-                    coordinates.x.push("1970-01-01 00:" + play.clock);
-                    coordinates.y.push(play.homeTeamScore - play.awayTeamScore);
-
-                    play.isVideoAvailable
-                      ? playMarkerSymbols.push("circle")
-                      : playMarkerSymbols.push("circle-open");
-
-                    hoverTexts.push(
-                      `${play.awayTeamScore - play.homeTeamScore}` +
-                        `<br><b>Score</b>: ${play.awayTeamScore} - ${play.homeTeamScore}` +
-                        `<br><b>Description</b>: ${play.description}`
-                    );
-                  }
-                });
-
-                periods.push({
-                  customPlays: scoreChangingPlays,
-                  x: coordinates.x,
-                  y: coordinates.y,
-                  xaxis: "x" + (periodIndex != 0 ? periodIndex + 1 : ""),
-                  yaxis: "y",
-                  mode: "lines+markers",
-                  line: {
-                    shape: "spline",
-                    smoothing: 0.3,
-                    width: 3,
-                    color: shadeColour(
-                      rgbToHex(
-                        colours[colourIndex + scoreChangingPlays.length - 1]
-                          .replace(/[^\d,]/g, "")
-                          .split(",")
-                      ),
-                      40
-                    )
-                  },
-                  marker: {
-                    size: 8,
-                    symbol: playMarkerSymbols,
-                    color: colours.slice(
-                      colourIndex,
-                      colourIndex + scoreChangingPlays.length
-                    )
-                  },
-                  type: "scattergl",
-                  hoverinfo: "text",
-                  text: hoverTexts
-                });
-
-                colourIndex += scoreChangingPlays.length;
+              periods.push({
+                customPlays: scoreChangingPlays,
+                x: coordinates.x,
+                y: coordinates.y,
+                xaxis: "x" + (periodIndex != 0 ? periodIndex + 1 : ""),
+                yaxis: "y",
+                mode: "lines+markers",
+                line: {
+                  shape: "spline",
+                  smoothing: 0.3,
+                  width: 3,
+                  color: shadeColour(
+                    rgbToHex(
+                      colours[colourIndex + scoreChangingPlays.length - 1]
+                        .replace(/[^\d,]/g, "")
+                        .split(",")
+                    ),
+                    40
+                  )
+                },
+                marker: {
+                  size: 8,
+                  symbol: playMarkerSymbols,
+                  color: colours.slice(
+                    colourIndex,
+                    colourIndex + scoreChangingPlays.length
+                  )
+                },
+                type: "scattergl",
+                hoverinfo: "text",
+                text: hoverTexts
               });
 
-              this.playByPlay = {
-                data: periods,
-                layout: {
-                  images: [
-                    {
-                      source:
-                        "assets/team-logos/" +
-                        boxScore.basicGameData.awayTeam.abbreviation.toLowerCase() +
-                        ".png",
-                      opacity: 0.5,
-                      sizex: 0.2,
-                      sizey: 0.2,
-                      xanchor: "right",
-                      yanchor: "top"
-                    },
-                    {
-                      source:
-                        "assets/team-logos/" +
-                        boxScore.basicGameData.homeTeam.abbreviation.toLowerCase() +
-                        ".png",
-                      opacity: 0.5,
-                      xref: "paper",
-                      yref: "paper",
-                      x: 0,
-                      y: 1,
-                      sizex: 0.2,
-                      sizey: 0.2,
-                      xanchor: "right",
-                      yanchor: "bottom"
-                    }
+              colourIndex += scoreChangingPlays.length;
+            });
+
+            this.playByPlay = {
+              data: periods,
+              layout: {
+                images: [
+                  {
+                    source:
+                      "assets/team-logos/" +
+                      boxScore.basicGameData.awayTeam.abbreviation.toLowerCase() +
+                      ".png",
+                    opacity: 0.5,
+                    sizex: 0.2,
+                    sizey: 0.2,
+                    xanchor: "right",
+                    yanchor: "top"
+                  },
+                  {
+                    source:
+                      "assets/team-logos/" +
+                      boxScore.basicGameData.homeTeam.abbreviation.toLowerCase() +
+                      ".png",
+                    opacity: 0.5,
+                    xref: "paper",
+                    yref: "paper",
+                    x: 0,
+                    y: 1,
+                    sizex: 0.2,
+                    sizey: 0.2,
+                    xanchor: "right",
+                    yanchor: "bottom"
+                  }
+                ],
+                showlegend: false,
+                autosize: true,
+                grid: {
+                  rows: 1,
+                  columns: periods.length,
+                  xgap: 0.1
+                },
+                yaxis: {
+                  fixedrange: true,
+                  showgrid: false,
+                  range: [
+                    -(boxScore.stats.awayTeam.biggestLead + 2),
+                    boxScore.stats.homeTeam.biggestLead + 2
                   ],
-                  showlegend: false,
-                  autosize: true,
-                  grid: {
-                    rows: 1,
-                    columns: periods.length,
-                    xgap: 0.1
-                  },
-                  yaxis: {
-                    fixedrange: true,
-                    showgrid: false,
-                    range: [
-                      -(boxScore.stats.awayTeam.biggestLead + 2),
-                      boxScore.stats.homeTeam.biggestLead + 2
-                    ],
-                    title: {
-                      text: "Score difference (away-home)"
-                    }
+                  title: {
+                    text: "Score difference (away-home)"
                   }
                 }
-              };
-
-              for (
-                let periodIndex = 0;
-                periodIndex < periods.length;
-                periodIndex++
-              ) {
-                this.playByPlay.layout[
-                  "xaxis" + (periodIndex != 0 ? periodIndex + 1 : "")
-                ] = {
-                  fixedrange: false,
-                  showgrid: false,
-                  type: "date",
-                  tickformat: "%M:%S",
-                  range: [
-                    periodIndex <= 3
-                      ? "1970-01-01 00:12:00.0"
-                      : "1970-01-01 00:05:00.0",
-                    "1970-01-01 00:00:00.0"
-                  ],
-                  tickangle: 40,
-                  dtick: periodIndex <= 3 ? 240000 : 300000,
-                  title: {
-                    text:
-                      periodIndex <= 3
-                        ? "Q" + (periodIndex + 1)
-                        : "OT" + (periodIndex - 3)
-                  }
-                };
               }
-            });
-          }
+            };
+
+            for (
+              let periodIndex = 0;
+              periodIndex < periods.length;
+              periodIndex++
+            ) {
+              this.playByPlay.layout[
+                "xaxis" + (periodIndex != 0 ? periodIndex + 1 : "")
+              ] = {
+                fixedrange: false,
+                showgrid: false,
+                type: "date",
+                tickformat: "%M:%S",
+                range: [
+                  periodIndex <= 3
+                    ? "1970-01-01 00:12:00.0"
+                    : "1970-01-01 00:05:00.0",
+                  "1970-01-01 00:00:00.0"
+                ],
+                tickangle: 40,
+                dtick: periodIndex <= 3 ? 240000 : 300000,
+                title: {
+                  text:
+                    periodIndex <= 3
+                      ? "Q" + (periodIndex + 1)
+                      : "OT" + (periodIndex - 3)
+                }
+              };
+            }
+          });
         })
         .catch(() => {
           this.router.navigate(["/home"]);

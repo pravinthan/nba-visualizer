@@ -21,7 +21,7 @@ export class HomeComponent {
 
   openPlayByPlaySnackBar() {
     this.snackBar.open(
-      "Navigate to Schedule and click on a finished game's score to access play-by-play data.",
+      "Navigate to Schedule and click on a score to access play-by-play data.",
       "OK",
       {
         duration: 5000

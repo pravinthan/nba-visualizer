@@ -45,7 +45,7 @@ Can be accessed by navigating to a live/completed game and clicking on the score
 
 ### Play-by-Play
 <img src="src/assets/screenshots/play-by-play.png" alt="Play-by-Play" />
-Can be accessed by navigating to a completed game and clicking on the score.
+Can be accessed by navigating to a live/completed game and clicking on the score.
 
 ### Play-by-Play Video Highlights
 <img src="src/assets/screenshots/play-by-play-video.png" alt="Play-by-Play Video Highlights" />
