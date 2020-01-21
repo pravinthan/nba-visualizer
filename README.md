@@ -32,6 +32,10 @@ Then run the following command to build and serve the app:
 $ npm run serve
 ```
 
+Then change `endpoint = "/api"` to `endpoint = "http://localhost:4201/api"` in `src/app/shared/api.service.ts`.
+
+The app can be found on `http://localhost:4200` while the server can be found on `http://localhost:4201`.
+
 ## Screenshots
 
 ### Schedule
