@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { MatSnackBar, MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
 import { AdvisoryDialogComponent } from "./advisory-dialog/advisory-dialog.component";
 
 @Component({

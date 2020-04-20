@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { BreakpointObserver } from "@angular/cdk/layout";
 import { Game } from "src/app/shared/game.model";
 import { ApiService } from "src/app/shared/api.service";
-import { MatDatepickerInputEvent } from "@angular/material";
+import { MatDatepickerInputEvent } from "@angular/material/datepicker";
 import { BoxScore } from "src/app/shared/box-score.model";
 
 interface GamesForDate {

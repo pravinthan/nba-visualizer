@@ -4,7 +4,7 @@ import { ApiService } from "src/app/shared/api.service";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { Article } from "src/app/shared/article.model";
 import { PlayByPlay } from "src/app/shared/play-by-play.model";
-import { MatDialog } from "@angular/material";
+import { MatDialog } from "@angular/material/dialog";
 import { PlayByPlayVideo } from "src/app/shared/play-by-play-video.model";
 import { PlayByPlayVideoDialogComponent } from "./play-by-play-video-dialog/play-by-play-video-dialog.component";
 

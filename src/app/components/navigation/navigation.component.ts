@@ -1,5 +1,5 @@
 import { Component, ViewChild, ElementRef } from "@angular/core";
-import { MatSidenav } from "@angular/material";
+import { MatSidenav } from "@angular/material/sidenav";
 
 @Component({
   selector: "app-navigation",
@@ -7,7 +7,7 @@ import { MatSidenav } from "@angular/material";
   styleUrls: ["./navigation.component.css"],
 })
 export class NavigationComponent {
-  @ViewChild(MatSidenav, { static: false })
+  @ViewChild(MatSidenav)
   public sidebar: MatSidenav;
 
   constructor(elementRef: ElementRef) {
