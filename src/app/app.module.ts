@@ -16,7 +16,8 @@ import {
   MatNativeDateModule,
   MatTabsModule,
   MatSnackBarModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatDialogModule,
 } from "@angular/material";
 import { LayoutModule } from "@angular/cdk/layout";
 import { CommonModule } from "@angular/common";
@@ -31,8 +32,9 @@ import { NavigationComponent } from "./components/navigation/navigation.componen
 import { GamesComponent } from "./components/pages/games/games.component";
 import { ScheduleComponent } from "./components/pages/schedule/schedule.component";
 import { PlayByPlayVideoDialogComponent } from "./components/pages/games/play-by-play-video-dialog/play-by-play-video-dialog.component";
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { ServiceWorkerModule } from "@angular/service-worker";
+import { environment } from "../environments/environment";
+import { AdvisoryDialogComponent } from "./components/pages/home/advisory-dialog/advisory-dialog.component";
 
 PlotlyViaCDNModule.plotlyVersion = "latest";
 PlotlyViaCDNModule.plotlyBundle = "basic";
@@ -45,7 +47,8 @@ PlotlyViaCDNModule.plotlyBundle = "basic";
     NavigationComponent,
     ScheduleComponent,
     GamesComponent,
-    PlayByPlayVideoDialogComponent
+    PlayByPlayVideoDialogComponent,
+    AdvisoryDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,12 +70,15 @@ PlotlyViaCDNModule.plotlyBundle = "basic";
     MatTabsModule,
     MatProgressSpinnerModule,
     MatPaginatorModule,
+    MatDialogModule,
     LayoutModule,
     PlotlyViaCDNModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register("ngsw-worker.js", {
+      enabled: environment.production,
+    }),
   ],
   providers: [ApiService],
   bootstrap: [AppComponent],
-  entryComponents: [PlayByPlayVideoDialogComponent]
+  entryComponents: [PlayByPlayVideoDialogComponent, AdvisoryDialogComponent],
 })
 export class AppModule {}

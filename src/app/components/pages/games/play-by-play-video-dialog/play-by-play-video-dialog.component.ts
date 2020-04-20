@@ -9,7 +9,7 @@ interface PlayByPlayVideoDialogData {
 
 @Component({
   templateUrl: "play-by-play-video-dialog.component.html",
-  styleUrls: ["play-by-play-video-dialog.component.css"]
+  styleUrls: ["play-by-play-video-dialog.component.css"],
 })
 export class PlayByPlayVideoDialogComponent implements OnInit {
   videoFailedToLoad = false;

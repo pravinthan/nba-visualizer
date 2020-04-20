@@ -33,7 +33,7 @@ const teams = {
   "1610612759": { fullName: "San Antonio Spurs", abbreviation: "SAS" },
   "1610612761": { fullName: "Toronto Raptors", abbreviation: "TOR" },
   "1610612762": { fullName: "Utah Jazz", abbreviation: "UTA" },
-  "1610612764": { fullName: "Washington Wizards", abbreviation: "WAS" }
+  "1610612764": { fullName: "Washington Wizards", abbreviation: "WAS" },
 };
 
 /**
@@ -58,9 +58,9 @@ nbaRoute
     nba.data
       .boxscore({
         gameId: req.params.gameId,
-        date: req.params.year + req.params.month + req.params.date
+        date: req.params.year + req.params.month + req.params.date,
       })
-      .then(boxscore => {
+      .then((boxscore) => {
         return {
           basicGameData: {
             seasonYear: boxscore.basicGameData.seasonYear,
@@ -75,22 +75,22 @@ nbaRoute
             period: {
               current: boxscore.basicGameData.period.current,
               isHalftime: boxscore.basicGameData.period.isHalftime,
-              isEndOfPeriod: boxscore.basicGameData.period.isEndOfPeriod
+              isEndOfPeriod: boxscore.basicGameData.period.isEndOfPeriod,
             },
             awayTeam: {
               teamId: boxscore.basicGameData.vTeam.teamId,
               wins: boxscore.basicGameData.vTeam.win,
               losses: boxscore.basicGameData.vTeam.loss,
               score: boxscore.basicGameData.vTeam.score,
-              lineScore: boxscore.basicGameData.vTeam.linescore
+              lineScore: boxscore.basicGameData.vTeam.linescore,
             },
             homeTeam: {
               teamId: boxscore.basicGameData.hTeam.teamId,
               wins: boxscore.basicGameData.hTeam.win,
               losses: boxscore.basicGameData.hTeam.loss,
               score: boxscore.basicGameData.hTeam.score,
-              lineScore: boxscore.basicGameData.hTeam.linescore
-            }
+              lineScore: boxscore.basicGameData.hTeam.linescore,
+            },
           },
           stats: {
             awayTeam: {
@@ -116,22 +116,22 @@ nbaRoute
                 blocks: boxscore.stats.vTeam.totals.blocks,
                 plusMinus: boxscore.stats.vTeam.totals.plusMinus,
                 min: boxscore.stats.vTeam.totals.min,
-                teamFouls: boxscore.stats.vTeam.totals.team_fouls
+                teamFouls: boxscore.stats.vTeam.totals.team_fouls,
               },
               leaders: {
                 points: {
                   value: boxscore.stats.vTeam.leaders.points.value,
-                  players: boxscore.stats.vTeam.leaders.points.players
+                  players: boxscore.stats.vTeam.leaders.points.players,
                 },
                 rebounds: {
                   value: boxscore.stats.vTeam.leaders.rebounds.value,
-                  players: boxscore.stats.vTeam.leaders.rebounds.players
+                  players: boxscore.stats.vTeam.leaders.rebounds.players,
                 },
                 assists: {
                   value: boxscore.stats.vTeam.leaders.assists.value,
-                  players: boxscore.stats.vTeam.leaders.assists.players
-                }
-              }
+                  players: boxscore.stats.vTeam.leaders.assists.players,
+                },
+              },
             },
             homeTeam: {
               biggestLead: parseInt(boxscore.stats.hTeam.biggestLead),
@@ -156,34 +156,34 @@ nbaRoute
                 blocks: boxscore.stats.hTeam.totals.blocks,
                 plusMinus: boxscore.stats.hTeam.totals.plusMinus,
                 min: boxscore.stats.hTeam.totals.min,
-                teamFouls: boxscore.stats.hTeam.totals.team_fouls
+                teamFouls: boxscore.stats.hTeam.totals.team_fouls,
               },
               leaders: {
                 points: {
                   value: boxscore.stats.hTeam.leaders.points.value,
-                  players: boxscore.stats.hTeam.leaders.points.players
+                  players: boxscore.stats.hTeam.leaders.points.players,
                 },
                 rebounds: {
                   value: boxscore.stats.hTeam.leaders.rebounds.value,
-                  players: boxscore.stats.hTeam.leaders.rebounds.players
+                  players: boxscore.stats.hTeam.leaders.rebounds.players,
                 },
                 assists: {
                   value: boxscore.stats.hTeam.leaders.assists.value,
-                  players: boxscore.stats.hTeam.leaders.assists.players
-                }
-              }
+                  players: boxscore.stats.hTeam.leaders.assists.players,
+                },
+              },
             },
-            activePlayers: boxscore.stats.activePlayers
-          }
+            activePlayers: boxscore.stats.activePlayers,
+          },
         };
       })
-      .then(boxscore => {
+      .then((boxscore) => {
         return nba.data
           .teams({ year: boxscore.basicGameData.seasonYear })
-          .then(teams => {
+          .then((teams) => {
             // Add team names
             const teamList = teams.league.standard;
-            teamList.forEach(team => {
+            teamList.forEach((team) => {
               if (team.teamId == boxscore.basicGameData.awayTeam.teamId) {
                 boxscore.basicGameData.awayTeam.cityName = team.city;
                 boxscore.basicGameData.awayTeam.nickname = team.nickname;
@@ -199,8 +199,8 @@ nbaRoute
             return Promise.resolve(boxscore);
           });
       })
-      .then(boxscore => res.json(boxscore))
-      .catch(err => {
+      .then((boxscore) => res.json(boxscore))
+      .catch((err) => {
         return next(err);
       });
   });
@@ -227,17 +227,17 @@ nbaRoute
     nba.data
       .previewArticle({
         gameId: req.params.gameId,
-        date: req.params.year + req.params.month + req.params.date
+        date: req.params.year + req.params.month + req.params.date,
       })
-      .then(previewArticle => {
+      .then((previewArticle) => {
         return {
           author: previewArticle.author,
           authorTitle: previewArticle.authorTitle,
           title: previewArticle.title,
-          paragraphs: previewArticle.paragraphs
+          paragraphs: previewArticle.paragraphs,
         };
       })
-      .then(previewArticle => {
+      .then((previewArticle) => {
         res.json(previewArticle);
       });
   });
@@ -264,17 +264,17 @@ nbaRoute
     nba.data
       .recapArticle({
         gameId: req.params.gameId,
-        date: req.params.year + req.params.month + req.params.date
+        date: req.params.year + req.params.month + req.params.date,
       })
-      .then(recapArticle => {
+      .then((recapArticle) => {
         return {
           author: recapArticle.author,
           authorTitle: recapArticle.authorTitle,
           title: recapArticle.title,
-          paragraphs: recapArticle.paragraphs
+          paragraphs: recapArticle.paragraphs,
         };
       })
-      .then(recapArticle => {
+      .then((recapArticle) => {
         res.json(recapArticle);
       });
   });
@@ -288,15 +288,15 @@ nbaRoute.route("/play-by-play/:gameId/:seasonYear").get((req, res, next) => {
   fetch(
     `https://nlnbamdnyc-a.akamaihd.net/fs/nba/feeds_s2012/stats/${req.params.seasonYear}/pbp/${req.params.gameId}.json`
   )
-    .then(response => response.json())
-    .then(playByPlay => {
+    .then((response) => response.json())
+    .then((playByPlay) => {
       let newPlayByPlay = { periods: [] };
       playByPlay.quarters.forEach((period, periodIndex) => {
         if (newPlayByPlay.periods[periodIndex] == null) {
           newPlayByPlay.periods[periodIndex] = { plays: [] };
         }
 
-        period.plays.forEach(play => {
+        period.plays.forEach((play) => {
           newPlayByPlay.periods[periodIndex].plays.push({
             clock: play.c,
             eventNum: play.id,
@@ -306,15 +306,15 @@ nbaRoute.route("/play-by-play/:gameId/:seasonYear").get((req, res, next) => {
             homeTeamScore: play.hs,
             isVideoAvailable: play.v != null,
             videoServer: play.vs,
-            didScoreChange: play.p > 0
+            didScoreChange: play.p > 0,
           });
         });
       });
 
       return newPlayByPlay;
     })
-    .then(playByPlay => res.json(playByPlay))
-    .catch(err => {
+    .then((playByPlay) => res.json(playByPlay))
+    .catch((err) => {
       return next(err);
     });
 });
@@ -331,15 +331,15 @@ nbaRoute
   .get((req, res, next) => {
     const URL = `https://watch.nba.com/service/publishpoint?gt=128&type=game&extid=${req.params.gameId}&event=${req.params.relevantTeamAbbreviation}${req.params.eventNum}&format=json`;
     fetch(URL)
-      .then(response => response.json())
-      .then(responseJson => {
+      .then((response) => response.json())
+      .then((responseJson) => {
         return { videoURL: responseJson.path, fallbackURL: null };
       })
-      .then(playByPlayVideoURL => res.json(playByPlayVideoURL))
-      .catch(err => {
+      .then((playByPlayVideoURL) => res.json(playByPlayVideoURL))
+      .catch((err) => {
         res.json({
           videoURL: null,
-          fallbackURL: URL.substring(0, URL.indexOf("&format=json"))
+          fallbackURL: URL.substring(0, URL.indexOf("&format=json")),
         });
       });
   });
@@ -360,11 +360,11 @@ nbaRoute.route("/schedule/:date/:month/:year").get((req, res, next) => {
 
   nba.data
     .schedule({ year: seasonYear })
-    .then(schedule => {
+    .then((schedule) => {
       // Filter the schedule to only show games on the given date and month
       var games = [];
       const gameList = schedule.league.standard;
-      gameList.forEach(game => {
+      gameList.forEach((game) => {
         const gameTimeET = game.startTimeEastern.substring(
           0,
           game.startTimeEastern.indexOf("ET") - 1
@@ -383,17 +383,17 @@ nbaRoute.route("/schedule/:date/:month/:year").get((req, res, next) => {
               fullName: teams[game.vTeam.teamId].fullName,
               abbreviation: teams[game.vTeam.teamId].abbreviation,
               wins: game.vTeam.win,
-              losses: game.vTeam.loss
+              losses: game.vTeam.loss,
             },
             homeTeam: {
               fullName: teams[game.hTeam.teamId].fullName,
               abbreviation: teams[game.hTeam.teamId].abbreviation,
               wins: game.hTeam.win,
-              losses: game.hTeam.loss
+              losses: game.hTeam.loss,
             },
             isActive: false,
             dateET: gameStartET,
-            timeET: gameTimeET
+            timeET: gameTimeET,
           };
 
           if (game.statusNum == 3) {
@@ -411,8 +411,8 @@ nbaRoute.route("/schedule/:date/:month/:year").get((req, res, next) => {
 
       return games;
     })
-    .then(games => res.json(games))
-    .catch(err => {
+    .then((games) => res.json(games))
+    .catch((err) => {
       return next(err);
     });
 });

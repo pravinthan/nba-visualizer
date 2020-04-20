@@ -110,7 +110,7 @@ interface BoxScoreTeam {
 @Component({
   selector: "app-games",
   templateUrl: "./games.component.html",
-  styleUrls: ["./games.component.css"]
+  styleUrls: ["./games.component.css"],
 })
 export class GamesComponent implements OnInit {
   Number = Number;
@@ -133,7 +133,7 @@ export class GamesComponent implements OnInit {
     "stl",
     "to",
     "pf",
-    "pts"
+    "pts",
   ];
   previewArticle: Article;
   recapArticle: Article;
@@ -157,22 +157,22 @@ export class GamesComponent implements OnInit {
 
       // Get box score then preview and recap articles
       this.getBoxScore(params.gameId, this.dateET)
-        .then(boxScore => {
+        .then((boxScore) => {
           this.boxScore = boxScore;
           return boxScore;
         })
-        .then(boxScore => {
+        .then((boxScore) => {
           this.lineScoreData = [
             {
               abbreviation: boxScore.basicGameData.awayTeam.abbreviation,
               lineScore: boxScore.basicGameData.awayTeam.lineScore,
-              score: boxScore.basicGameData.awayTeam.score
+              score: boxScore.basicGameData.awayTeam.score,
             },
             {
               abbreviation: boxScore.basicGameData.homeTeam.abbreviation,
               lineScore: boxScore.basicGameData.homeTeam.lineScore,
-              score: boxScore.basicGameData.homeTeam.score
-            }
+              score: boxScore.basicGameData.homeTeam.score,
+            },
           ];
 
           // Insert columns equal to the current period
@@ -183,17 +183,17 @@ export class GamesComponent implements OnInit {
 
           return boxScore;
         })
-        .then(boxScore => {
+        .then((boxScore) => {
           if (boxScore.basicGameData.isPreviewArticleAvailable) {
             this.getPreviewArticle(params.gameId, this.dateET).then(
-              previewArticle => {
+              (previewArticle) => {
                 this.previewArticle = previewArticle;
               }
             );
           }
           if (boxScore.basicGameData.isRecapArticleAvailable) {
             this.getRecapArticle(params.gameId, this.dateET).then(
-              recapArticle => {
+              (recapArticle) => {
                 this.recapArticle = recapArticle;
               }
             );
@@ -201,7 +201,7 @@ export class GamesComponent implements OnInit {
 
           return boxScore;
         })
-        .then(boxScore => {
+        .then((boxScore) => {
           this.boxScoreData = [];
           this.boxScoreData.push({
             abbreviation: boxScore.basicGameData.awayTeam.abbreviation,
@@ -210,7 +210,7 @@ export class GamesComponent implements OnInit {
             wins: boxScore.basicGameData.awayTeam.wins,
             losses: boxScore.basicGameData.awayTeam.losses,
             totals: boxScore.stats.awayTeam.totals,
-            players: []
+            players: [],
           });
           this.boxScoreData.push({
             abbreviation: boxScore.basicGameData.homeTeam.abbreviation,
@@ -219,7 +219,7 @@ export class GamesComponent implements OnInit {
             wins: boxScore.basicGameData.homeTeam.wins,
             losses: boxScore.basicGameData.homeTeam.losses,
             totals: boxScore.stats.homeTeam.totals,
-            players: []
+            players: [],
           });
 
           const awayTeamId = boxScore.basicGameData.awayTeam.teamId;
@@ -242,15 +242,15 @@ export class GamesComponent implements OnInit {
 
           return boxScore;
         })
-        .then(boxScore => {
+        .then((boxScore) => {
           // Get play-by-play data
           this.getPlayByPlay(
             params.gameId,
             boxScore.basicGameData.seasonYear
-          ).then(playByPlay => {
+          ).then((playByPlay) => {
             var numberOfScoreChangingPlays = 0;
-            playByPlay.periods.forEach(playByPlayPeriod => {
-              playByPlayPeriod.plays.forEach(play => {
+            playByPlay.periods.forEach((playByPlayPeriod) => {
+              playByPlayPeriod.plays.forEach((play) => {
                 if (play.didScoreChange) {
                   numberOfScoreChangingPlays++;
                 }
@@ -271,7 +271,7 @@ export class GamesComponent implements OnInit {
               var playMarkerSymbols: string[] = [];
               var scoreChangingPlays = [];
               var hoverTexts: string[] = [];
-              playByPlayPeriod.plays.forEach(play => {
+              playByPlayPeriod.plays.forEach((play) => {
                 if (play.didScoreChange) {
                   scoreChangingPlays.push(play);
 
@@ -309,7 +309,7 @@ export class GamesComponent implements OnInit {
                         .split(",")
                     ),
                     40
-                  )
+                  ),
                 },
                 marker: {
                   size: 8,
@@ -317,11 +317,11 @@ export class GamesComponent implements OnInit {
                   color: colours.slice(
                     colourIndex,
                     colourIndex + scoreChangingPlays.length
-                  )
+                  ),
                 },
                 type: "scattergl",
                 hoverinfo: "text",
-                text: hoverTexts
+                text: hoverTexts,
               });
 
               colourIndex += scoreChangingPlays.length;
@@ -340,7 +340,7 @@ export class GamesComponent implements OnInit {
                     sizex: 0.2,
                     sizey: 0.2,
                     xanchor: "right",
-                    yanchor: "top"
+                    yanchor: "top",
                   },
                   {
                     source:
@@ -355,28 +355,28 @@ export class GamesComponent implements OnInit {
                     sizex: 0.2,
                     sizey: 0.2,
                     xanchor: "right",
-                    yanchor: "bottom"
-                  }
+                    yanchor: "bottom",
+                  },
                 ],
                 showlegend: false,
                 autosize: true,
                 grid: {
                   rows: 1,
                   columns: periods.length,
-                  xgap: 0.1
+                  xgap: 0.1,
                 },
                 yaxis: {
                   fixedrange: true,
                   showgrid: false,
                   range: [
                     -(boxScore.stats.awayTeam.biggestLead + 2),
-                    boxScore.stats.homeTeam.biggestLead + 2
+                    boxScore.stats.homeTeam.biggestLead + 2,
                   ],
                   title: {
-                    text: "Score difference (away-home)"
-                  }
-                }
-              }
+                    text: "Score difference (away-home)",
+                  },
+                },
+              },
             };
 
             for (
@@ -395,7 +395,7 @@ export class GamesComponent implements OnInit {
                   periodIndex <= 3
                     ? "1970-01-01 00:12:00.0"
                     : "1970-01-01 00:05:00.0",
-                  "1970-01-01 00:00:00.0"
+                  "1970-01-01 00:00:00.0",
                 ],
                 tickangle: 40,
                 dtick: periodIndex <= 3 ? 240000 : 300000,
@@ -403,8 +403,8 @@ export class GamesComponent implements OnInit {
                   text:
                     periodIndex <= 3
                       ? "Q" + (periodIndex + 1)
-                      : "OT" + (periodIndex - 3)
-                }
+                      : "OT" + (periodIndex - 3),
+                },
               };
             }
           });
@@ -454,8 +454,8 @@ export class GamesComponent implements OnInit {
             play.relevantTeamAbbreviation,
             play.eventNum
           ),
-          caption: play.description
-        }
+          caption: play.description,
+        },
       });
     }
   }
@@ -500,7 +500,7 @@ function rgbToHex(rgb: string[]) {
   return (
     "#" +
     rgb
-      .map(x => {
+      .map((x) => {
         const hex = parseInt(x).toString(16);
         return hex.length === 1 ? "0" + hex : hex;
       })

@@ -5,7 +5,7 @@ import { catchError, map } from "rxjs/operators";
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from "@angular/common/http";
 import { BoxScore } from "./box-score.model";
 import { Article } from "./article.model";
@@ -13,7 +13,7 @@ import { PlayByPlay } from "./play-by-play.model";
 import { PlayByPlayVideo } from "./play-by-play-video.model";
 
 @Injectable({
-  providedIn: "root"
+  providedIn: "root",
 })
 export class ApiService {
   endpoint = "/api";

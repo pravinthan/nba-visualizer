@@ -1,0 +1,26 @@
+.mat-dialog-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mat-dialog-title > span {
+  padding: 0 0.25rem;
+  font-weight: bold;
+}
+
+.mat-dialog-title > span,
+mat-icon {
+  font-size: 28px;
+}
+
+mat-icon {
+  width: 28px;
+  height: 28px;
+}
+
+a {
+  overflow-wrap: break-word;
+  text-decoration: none;
+  color: blue;
+}

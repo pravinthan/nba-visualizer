@@ -8,11 +8,11 @@ const routes: Routes = [
   { path: "", pathMatch: "full", component: HomeComponent },
   { path: "schedule", component: ScheduleComponent },
   { path: "games/:dateET/:gameId", component: GamesComponent },
-  { path: "**", redirectTo: "" }
+  { path: "**", redirectTo: "" },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { useHash: true })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

@@ -16,7 +16,7 @@ interface GamesForDate {
 @Component({
   selector: "app-schedule",
   templateUrl: "./schedule.component.html",
-  styleUrls: ["./schedule.component.css"]
+  styleUrls: ["./schedule.component.css"],
 })
 export class ScheduleComponent implements OnInit {
   Number = Number;
@@ -59,7 +59,7 @@ export class ScheduleComponent implements OnInit {
       this.api
         .getSchedule(date)
         .toPromise()
-        .then(games => {
+        .then((games) => {
           if (games.length != 0) {
             const dateETYear = parseInt(games[0].dateET.substring(0, 4));
             const dateETMonth = parseInt(games[0].dateET.substring(4, 6));
@@ -72,7 +72,7 @@ export class ScheduleComponent implements OnInit {
               games: games,
               numberOfFinishedGames: 0,
               numberOfActiveGames: 0,
-              numberOfUpcomingGames: 0
+              numberOfUpcomingGames: 0,
             };
 
             for (let i = 0; i < games.length; i++) {
@@ -82,13 +82,13 @@ export class ScheduleComponent implements OnInit {
                 // Game is active
                 gamesForDate.numberOfActiveGames += 1;
 
-                this.getBoxScore(game.gameId, dateET).then(boxScore => {
+                this.getBoxScore(game.gameId, dateET).then((boxScore) => {
                   game.awayTeam.score = boxScore.basicGameData.awayTeam.score;
                   game.homeTeam.score = boxScore.basicGameData.homeTeam.score;
                   game.period = {
                     current: boxScore.basicGameData.period.current,
                     isHalftime: boxScore.basicGameData.period.isHalftime,
-                    isEndOfPeriod: boxScore.basicGameData.period.isEndOfPeriod
+                    isEndOfPeriod: boxScore.basicGameData.period.isEndOfPeriod,
                   };
                   game.clock = boxScore.basicGameData.clock;
                 });
