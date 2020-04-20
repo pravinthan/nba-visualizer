@@ -17,7 +17,6 @@ import { PlayByPlayVideo } from "./play-by-play-video.model";
 })
 export class ApiService {
   endpoint = "/api";
-  // endpoint = "http://localhost:4201/api";
   headers = new HttpHeaders().set("Content-Type", "application/json");
 
   constructor(private http: HttpClient) {}

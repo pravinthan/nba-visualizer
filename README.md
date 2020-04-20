@@ -12,13 +12,17 @@
 
 Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can click on the score to see preview and recap articles, full box score and play-by-play data.
 
-## Table of contents
+<h1>Table of contents</h1>
 
-* [Running this project on a local machine](#running-this-project-on-a-local-machine)
-* [Screenshots](#screenshots)
-* [License](#license)
+- [Running this project on a local machine](#running-this-project-on-a-local-machine)
+- [Screenshots](#screenshots)
+  - [Schedule](#schedule)
+  - [Box Score](#box-score)
+  - [Play-by-Play](#play-by-play)
+  - [Play-by-Play Video Highlights](#play-by-play-video-highlights)
+- [License](#license)
 
-## Running this project on a local machine
+# Running this project on a local machine
 
 Download this repository and run the following command to install all necessary node modules:
 
@@ -29,32 +33,34 @@ $ npm i
 Then run the following command to build and serve the app:
 
 ```sh
-$ npm run serve
+$ npm run start-dev
 ```
-
-Then change `endpoint = "/api"` to `endpoint = "http://localhost:4201/api"` in `src/app/shared/api.service.ts`.
 
 The app can be found on `http://localhost:4200` while the server can be found on `http://localhost:4201`.
 
-## Screenshots
+# Screenshots
 
-### Schedule
+## Schedule
+
 <img src="src/assets/screenshots/schedule.png" alt="Schedule" />
 
 Can be accessed [here](https://nba.pravinthan.com/#/schedule).
 
-### Box Score
+## Box Score
+
 <img src="src/assets/screenshots/box-score.png" alt="Box Score" />
 Can be accessed by navigating to a live/completed game and clicking on the score.
 
-### Play-by-Play
+## Play-by-Play
+
 <img src="src/assets/screenshots/play-by-play.png" alt="Play-by-Play" />
 Can be accessed by navigating to a live/completed game and clicking on the score.
 
-### Play-by-Play Video Highlights
+## Play-by-Play Video Highlights
+
 <img src="src/assets/screenshots/play-by-play-video.png" alt="Play-by-Play Video Highlights" />
 Can be accessed by navigating to the play-by-play tab and clicking on a filled circle.
 
-## License
+# License
 
 [MIT](./LICENSE) &copy; [Pravinthan Prabagaran](https://pravinthan.com).
