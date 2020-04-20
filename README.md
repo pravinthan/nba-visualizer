@@ -14,7 +14,7 @@ Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can clic
 
 <h1>Table of Contents</h1>
 
-- [Running this project on a local machine](#running-this-project-on-a-local-machine)
+- [Running This Project on a Local Machine](#running-this-project-on-a-local-machine)
 - [Screenshots](#screenshots)
   - [Schedule](#schedule)
   - [Box Score](#box-score)
@@ -22,7 +22,7 @@ Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can clic
   - [Play-by-Play Video Highlights](#play-by-play-video-highlights)
 - [License](#license)
 
-# Running this project on a local machine
+# Running This Project on a Local Machine
 
 Download this repository and run the following command to install all necessary node modules:
 
