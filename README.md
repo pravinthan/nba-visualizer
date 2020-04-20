@@ -12,7 +12,7 @@
 
 Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can click on the score to see preview and recap articles, full box score and play-by-play data.
 
-<h1>Table of contents</h1>
+<h1>Table of Contents</h1>
 
 - [Running this project on a local machine](#running-this-project-on-a-local-machine)
 - [Screenshots](#screenshots)
