@@ -8,7 +8,7 @@
   <a href="https://nba.pravinthan.com">NBA Visualizer</a>
 </h1>
 
-> A web app dedicated to providing user-friendly NBA schedules, box scores, play-by-play data and more.
+> A progressive web app dedicated to providing user-friendly (mobile and desktop) NBA schedules, box scores, play-by-play data and more.
 
 Check out the [schedule](https://nba.pravinthan.com/#/schedule) and you can click on the score to see preview and recap articles, full box score and play-by-play data.
 
@@ -31,6 +31,10 @@ Then run the following command to build and serve the app:
 ```sh
 $ npm run serve
 ```
+
+Then change `endpoint = "/api"` to `endpoint = "http://localhost:4201/api"` in `src/app/shared/api.service.ts`.
+
+The app can be found on `http://localhost:4200` while the server can be found on `http://localhost:4201`.
 
 ## Screenshots
 
