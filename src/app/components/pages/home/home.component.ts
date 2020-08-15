@@ -10,7 +10,7 @@ import { AdvisoryDialogComponent } from "./advisory-dialog/advisory-dialog.compo
 })
 export class HomeComponent {
   constructor(private snackBar: MatSnackBar, public dialog: MatDialog) {
-    this.dialog.open(AdvisoryDialogComponent, { width: "min-content" });
+    // this.dialog.open(AdvisoryDialogComponent, { width: "min-content" });
   }
 
   openBoxScoreSnackBar() {
